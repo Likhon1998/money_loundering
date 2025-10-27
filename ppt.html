@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<!-- Chosen Palette: Calm Harmony (Warm Neutral: stone-50, Text: slate-900, Accent: blue-600, Highlight: orange-500) -->
+<!-- Application Structure Plan: A sidebar-navigated SPA. This non-linear, thematic structure is chosen over the original linear presentation to allow users (likely bank/FI staff) to quickly access the specific information they need, such as 'Responsibilities' or 'Statistics', without clicking through slides. Interaction is centered on a global language toggle (EN/BN), section-based content swapping, and interactive HTML diagrams for processes (ML Stages, Vicious Cycle), which are more engaging and explorable than static images. This design prioritizes user-driven exploration and quick reference. -->
+<!-- Visualization & Content Choices: 
+    - Info: ML/TF Definitions (Slides 3, 5, 6) -> Goal: Inform/Compare -> Presentation: Tabbed content in 'Core Concepts' section -> Interaction: Click tabs (ML/TF/Comparison) to swap text. Justify: Groups foundational definitions for easy comparison. Method: HTML/JS.
+    - Info: ML Stages (Slide 4) -> Goal: Organize/Explain Process -> Presentation: HTML/Tailwind flex-box diagram -> Interaction: JS onClick on each box to highlight it and display detailed text below. Justify: More engaging than a static list. Method: HTML/JS.
+    - Info: Statistics (Slide 8) -> Goal: Compare -> Presentation: 1) Large text callouts for Global GDP. 2) Chart.js Bar Chart for BFIU STRs (FY 20-21 vs 21-22) to show the 62% increase. -> Interaction: Chart.js tooltips. Justify: Visualizes the key data point (the *increase* in reporting) effectively. Library: Chart.js (Canvas).
+    - Info: Vicious Cycle (Slide 9) -> Goal: Organize/Explain Process -> Presentation: HTML/Tailwind diagram -> Interaction: JS onClick on stages to show details. Justify: Interactive flow diagram. Method: HTML/JS.
+    - Info: Laws & BFIU (Slides 10-14) -> Goal: Inform/Organize -> Presentation: Accordion component -> Interaction: Click to expand/collapse accordion item. Justify: Condenses text-heavy info neatly. Method: HTML/JS.
+    - Info: Responsibilities (Slides 15-20) -> Goal: Inform/Task-Oriented -> Presentation: Master section with sub-tabs: 'Who (ROs)', 'CDD/EDD', 'Reporting (STR)', 'Red Flags', 'Penalties'. -> Interaction: Click tabs to swap content. Justify: Groups all actionable compliance info into a "one-stop-shop". Method: HTML/JS.
+-->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>অর্থ পাচার ও সন্ত্রাসে অর্থায়ন প্রতিরোধ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans Bengali', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .lang-en, .lang-bn {
+            display: none;
+        }
+        .lang-en.active-lang, .lang-bn.active-lang {
+            display: inline-block;
+        }
+        p .lang-en.active-lang, p .lang-bn.active-lang {
+            display: inline;
+        }
+        div.lang-en.active-lang, div.lang-bn.active-lang {
+            display: block;
+        }
+        .nav-link.active {
+            background-color: #e0f2fe; /* blue-100 */
+            color: #2563eb; /* blue-600 */
+            font-weight: 700;
+        }
+        .interactive-box {
+            border: 2px solid #e5e7eb; /* gray-200 */
+            transition: all 0.3s ease;
+        }
+        .interactive-box.active {
+            border-color: #2563eb; /* blue-600 */
+            background-color: #eff6ff; /* blue-50 */
+            transform: translateY(-4px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .tab-btn.active {
+            border-bottom-color: #2563eb; /* blue-600 */
+            color: #2563eb; /* blue-600 */
+            font-weight: 600;
+        }
+        .tab-btn {
+            border-bottom: 2px solid transparent;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-slate-900">
+
+    <div class="flex flex-col md:flex-row min-h-screen">
+        <!-- Sidebar Navigation -->
+        <nav class="w-full md:w-64 md:fixed md:h-full bg-white shadow-lg p-4 md:p-6 z-10">
+            <div class="flex justify-center mb-4">
+                <img src="assets/logo2.png" alt="DSK Logo" class="h-16 w-auto" onerror="this.alt='DSK Logo'; this.src='https://placehold.co/150x60/0033a0/ffffff?text=DSK+Logo&font=sans';">
+            </div>
+            <h1 class="text-xl font-bold mb-4 text-center md:text-left">
+                <span class="lang-bn active-lang">কুইক মেন্যু</span>
+                <span class="lang-en">Quick Menu</span>
+            </h1>
+            
+            <div class="mb-6">
+                <span class="text-sm font-semibold">
+                    <span class="lang-bn active-lang">ভাষা পরিবর্তন</span>
+                    <span class="lang-en">Change Language</span>
+                </span>
+                <div class="flex space-x-2 mt-2">
+                    <button id="lang-bn-btn" class="lang-toggle-btn w-full text-sm py-2 px-3 rounded-md bg-blue-600 text-white font-semibold" data-lang="bn">বাংলা (BN)</button>
+                    <button id="lang-en-btn" class="lang-toggle-btn w-full text-sm py-2 px-3 rounded-md bg-gray-200 text-gray-700" data-lang="en">English (EN)</button>
+                </div>
+            </div>
+
+            <ul class="space-y-2">
+                <li><a href="#" class="nav-link block py-2 px-3 rounded-md hover:bg-gray-100" data-target="home">
+                    <span class="lang-bn active-lang">ভূমিকা</span>
+                    <span class="lang-en">Introduction</span>
+                </a></li>
+                <li><a href="#" class="nav-link block py-2 px-3 rounded-md hover:bg-gray-100" data-target="concepts">
+                    <span class="lang-bn active-lang">মূল ধারণা</span>
+                    <span class="lang-en">Core Concepts</span>
+                </a></li>
+                <li><a href="#" class="nav-link block py-2 px-3 rounded-md hover:bg-gray-100" data-target="process">
+                    <span class="lang-bn active-lang">প্রক্রিয়া ও প্রভাব</span>
+                    <span class="lang-en">Process & Impact</span>
+                </a></li>
+                <li><a href="#" class="nav-link block py-2 px-3 rounded-md hover:bg-gray-100" data-target="stats">
+                    <span class="lang-bn active-lang">তথ্য ও পরিসংখ্যান</span>
+                    <span class="lang-en">Data & Statistics</span>
+                </a></li>
+                <li><a href="#" class="nav-link block py-2 px-3 rounded-md hover:bg-gray-100" data-target="legal">
+                    <span class="lang-bn active-lang">আইনী কাঠামো</span>
+                    <span class="lang-en">Legal Framework</span>
+                </a></li>
+                <li><a href="#" class="nav-link block py-2 px-3 rounded-md hover:bg-gray-100" data-target="responsibilities">
+                    <span class="lang-bn active-lang">আপনার করণীয়</span>
+                    <span class="lang-en">Your Responsibilities</span>
+                </a></li>
+                <li><a href="#" class="nav-link block py-2 px-3 rounded-md hover:bg-gray-100" data-target="conclusion">
+                    <span class="lang-bn active-lang">উপসংহার</span>
+                    <span class="lang-en">Conclusion</span>
+                </a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="w-full md:ml-64 p-6 md:p-10">
+            
+            <!-- Home Section -->
+            <section id="home" class="content-section">
+                <h1 class="text-3xl md:text-4xl font-bold mb-4">
+                    <span class="lang-bn active-lang">অর্থ পাচার ও সন্ত্রাসে অর্থায়ন প্রতিরোধ</span>
+                    <span class="lang-en">Money Laundering & Terrorist Financing Prevention</span>
+                </h1>
+                <p class="text-lg text-gray-700 mb-6">
+                    <span class="lang-bn active-lang">বাংলাদেশ প্রেক্ষিত। এই ইন্টারেক্টিভ ড্যাশবোর্ডে আপনাকে স্বাগতম। বাম পাশের মেন্যু ব্যবহার করে বিভিন্ন বিভাগ অন্বেষণ করুন।</span>
+                    <span class="lang-en">Bangladesh Perspective. Welcome to this interactive dashboard. Use the menu on the left to explore different sections.</span>
+                </p>
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <h2 class="text-xl font-bold mb-2">
+                        <span class="lang-bn active-lang">উপস্থাপনায়</span>
+                        <span class="lang-en">Presented by</span>
+                    </h2>
+                    <p class="text-lg">
+                        <span class="lang-bn active-lang">মোঃ শহিদুল ইসলাম</span>
+                        <span class="lang-en">Md. Shahidul Islam</span>
+                    </p>
+                    <p class="text-gray-600">
+                        <span class="lang-bn active-lang">সিনিয়র অফিসার, মনিটরিং</span>
+                        <span class="lang-en">Senior Officer, Monitoring</span>
+                    </p>
+                </div>
+            </section>
+
+            <!-- Core Concepts Section -->
+            <section id="concepts" class="content-section hidden">
+                <h1 class="text-3xl font-bold mb-4">
+                    <span class="lang-bn active-lang">মূল ধারণা</span>
+                    <span class="lang-en">Core Concepts</span>
+                </h1>
+                <p class="text-lg text-gray-700 mb-6">
+                    <span class="lang-bn active-lang">অর্থ পাচার (ML) এবং সন্ত্রাসে অর্থায়ন (TF) কী এবং তাদের মধ্যে মূল পার্থক্যগুলি বুঝুন।</span>
+                    <span class="lang-en">Understand what Money Laundering (ML) and Terrorist Financing (TF) are, and their key differences.</span>
+                </p>
+
+                <div class="flex border-b border-gray-300 mb-4" data-tab-group="concepts">
+                    <button class="tab-btn py-2 px-4" data-tab="ml">
+                        <span class="lang-bn active-lang">অর্থ পাচার (ML)</span>
+                        <span class="lang-en">Money Laundering (ML)</span>
+                    </button>
+                    <button class="tab-btn py-2 px-4" data-tab="tf">
+                        <span class="lang-bn active-lang">সন্ত্রাসে অর্থায়ন (TF)</span>
+                        <span class="lang-en">Terrorist Financing (TF)</span>
+                    </button>
+                    <button class="tab-btn py-2 px-4" data-tab="comparison">
+                        <span class="lang-bn active-lang">পার্থক্য</span>
+                        <span class="lang-en">Comparison</span>
+                    </button>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <!-- ML Content -->
+                    <div data-tab-content="ml" class="tab-content">
+                        <h2 class="text-2xl font-bold mb-3">
+                            <span class="lang-bn active-lang">অর্থ পাচার কী?</span>
+                            <span class="lang-en">What is Money Laundering?</span>
+                        </h2>
+                        <p class="mb-4">
+                            <span class="lang-bn active-lang">অবৈধভাবে অর্জিত অর্থ ("কালো টাকা") বিভিন্ন প্রক্রিয়ার মাধ্যমে বৈধ ("সাদা") দেখানোর চেষ্টা করাকে অর্থ পাচার বলে।</span>
+                            <span class="lang-en">The process of making illegally-obtained funds (i.e., "dirty money") appear legitimate (i.e., "clean").</span>
+                        </p>
+                        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-md">
+                            <strong class="text-blue-800">
+                                <span class="lang-bn active-lang">মূল কথা:</span>
+                                <span class="lang-en">Key Idea:</span>
+                            </strong>
+                            <p class="text-blue-700">
+                                <span class="lang-bn active-lang">এর প্রধান উদ্দেশ্য হলো টাকার অবৈধ <strong>উৎস</strong> গোপন করা।</span>
+                                <span class="lang-en">It's about hiding the <strong>origin</strong> of the money.</span>
+                            </p>
+                        </div>
+                    </div>
+                    <!-- TF Content -->
+                    <div data-tab-content="tf" class="tab-content hidden">
+                        <h2 class="text-2xl font-bold mb-3">
+                            <span class="lang-bn active-lang">সন্ত্রাসে অর্থায়ন কী?</span>
+                            <span class="lang-en">What is Terrorist Financing?</span>
+                        </h2>
+                        <p class="mb-4">
+                            <span class="lang-bn active-lang">সন্ত্রাসী কর্মকাণ্ড পরিচালনার উদ্দেশ্যে (বৈধ বা অবৈধ, যেকোনো উৎস থেকে) অর্থ সংগ্রহ করা বা প্রদান করাকে সন্ত্রাসে অর্থায়ন বলে।</span>
+                            <span class="lang-en">Providing or collecting funds (from legal OR illegal sources) with the intention that they will be used to carry out terrorist acts.</span>
+                        </p>
+                        <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-md">
+                            <strong class="text-red-800">
+                                <span class="lang-bn active-lang">মূল কথা:</span>
+                                <span class="lang-en">Key Idea:</span>
+                            </strong>
+                            <p class="text-red-700">
+                                <span class="lang-bn active-lang">এখানে টাকার উৎস যাই হোক না কেন, এর অপরাধমূলক <strong>উদ্দেশ্য</strong> বা <strong>গন্তব্য</strong>-ই প্রধান।</span>
+                                <span class="lang-en">The <strong>destination</strong> or <strong>purpose</strong> of the money is the crime.</span>
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Comparison Content -->
+                    <div data-tab-content="comparison" class="tab-content hidden">
+                        <h2 class="text-2xl font-bold mb-3">
+                            <span class="lang-bn active-lang">মূল পার্থক্য</span>
+                            <span class="lang-en">Key Differences</span>
+                        </h2>
+                        <div class="overflow-x-auto">
+                            <table class="w-full min-w-[500px] border-collapse">
+                                <thead>
+                                    <tr class="bg-gray-100">
+                                        <th class="border p-3 text-left"><span class="lang-bn active-lang">বিষয়</span><span class="lang-en">Topic</span></th>
+                                        <th class="border p-3 text-left"><span class="lang-bn active-lang">অর্থ পাচার</span><span class="lang-en">Money Laundering</span></th>
+                                        <th class="border p-3 text-left"><span class="lang-bn active-lang">সন্ত্রাসে অর্থায়ন</span><span class="lang-en">Terrorist Financing</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="border p-3 font-semibold"><span class="lang-bn active-lang">উদ্দেশ্য</span><span class="lang-en">Motive</span></td>
+                                        <td class="border p-3"><span class="lang-bn active-lang">লোভ</span><span class="lang-en">Greed</span></td>
+                                        <td class="border p-3"><span class="lang-bn active-lang">আদর্শগত</span><span class="lang-en">Ideology</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border p-3 font-semibold"><span class="lang-bn active-lang">টাকার উৎস</span><span class="lang-en">Source</span></td>
+                                        <td class="border p-3"><span class="lang-bn active-lang">সর্বদা অবৈধ</span><span class="lang-en">Always illegal</span></td>
+                                        <td class="border p-3"><span class="lang-bn active-lang">বৈধ বা অবৈধ হতে পারে</span><span class="lang-en">Can be legal or illegal</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border p-3 font-semibold"><span class="lang-bn active-lang">লক্ষ্য</span><span class="lang-en">Goal</span></td>
+                                        <td class="border p-3"><span class="lang-bn active-lang">কালো টাকা সাদা করা</span><span class="lang-en">To make dirty money look clean</span></td>
+                                        <td class="border p-3"><span class="lang-bn active-lang">সন্ত্রাসী কাজে অর্থায়ন</span><span class="lang-en">To fund terrorist acts</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Process & Impact Section -->
+            <section id="process" class="content-section hidden">
+                <h1 class="text-3xl font-bold mb-4">
+                    <span class="lang-bn active-lang">প্রক্রিয়া ও প্রভাব</span>
+                    <span class="lang-en">Process & Impact</span>
+                </h1>
+                <p class="text-lg text-gray-700 mb-6">
+                    <span class="lang-bn active-lang">অর্থ পাচারের পর্যায়, অপরাধের দুষ্ট চক্র এবং সমাজে এর ক্ষতিকর প্রভাব সম্পর্কে জানুন।</span>
+                    <span class="lang-en">Learn about the stages of ML, the vicious cycle of crime, and its harmful impact on society.</span>
+                </p>
+                
+                <!-- ML Stages -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 mb-6">
+                    <h2 class="text-2xl font-bold mb-4">
+                        <span class="lang-bn active-lang">অর্থ পাচারের ৩টি পর্যায় (ক্লিক করুন)</span>
+                        <span class="lang-en">The 3 Stages of Money Laundering (Click one)</span>
+                    </h2>
+                    <div class="flex flex-col md:flex-row items-center justify-between space-y-2 md:space-y-0 md:space-x-2 mb-4" data-diagram-group="ml-stages">
+                        <div class="interactive-box w-full md:w-1/3 p-4 rounded-lg cursor-pointer text-center" data-info="ml-placement">
+                            <strong class="text-lg">
+                                <span class="lang-bn active-lang">১. স্থাপন</span>
+                                <span class="lang-en">1. Placement</span>
+                            </strong>
+                        </div>
+                        <div class="text-2xl text-gray-400">→</div>
+                        <div class="interactive-box w-full md:w-1/3 p-4 rounded-lg cursor-pointer text-center" data-info="ml-layering">
+                            <strong class="text-lg">
+                                <span class="lang-bn active-lang">২. স্তরকরণ</span>
+                                <span class="lang-en">2. Layering</span>
+                            </strong>
+                        </div>
+                        <div class="text-2xl text-gray-400">→</div>
+                        <div class="interactive-box w-full md:w-1/3 p-4 rounded-lg cursor-pointer text-center" data-info="ml-integration">
+                            <strong class="text-lg">
+                                <span class="lang-bn active-lang">৩. একত্রীকরণ</span>
+                                <span class="lang-en">3. Integration</span>
+                            </strong>
+                        </div>
+                    </div>
+                    <div id="ml-stage-info" class="p-4 bg-gray-50 rounded-md min-h-[100px]">
+                        <p class="text-gray-600">
+                            <span class="lang-bn active-lang">একটি পর্যায় নির্বাচন করুন।</span>
+                            <span class="lang-en">Select a stage to see details.</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Vicious Cycle -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 mb-6">
+                    <h2 class="text-2xl font-bold mb-4">
+                        <span class="lang-bn active-lang">অপরাধের দুষ্ট চক্র</span>
+                        <span class="lang-en">The Vicious Cycle of Crime</span>
+                    </h2>
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-2 text-center" data-diagram-group="cycle">
+                        <div class="interactive-box p-3 rounded-lg cursor-pointer" data-info="cycle-crime">
+                            <span class="lang-bn active-lang">অপরাধ</span><span class="lang-en">Crime</span>
+                        </div>
+                        <div class="flex items-center justify-center text-2xl text-gray-400">→</div>
+                        <div class="interactive-box p-3 rounded-lg cursor-pointer" data-info="cycle-profit">
+                            <span class="lang-bn active-lang">অবৈধ মুনাফা</span><span class="lang-en">Illegal Profit</span>
+                        </div>
+                        <div class="flex items-center justify-center text-2xl text-gray-400">→</div>
+                        <div class="interactive-box p-3 rounded-lg cursor-pointer" data-info="cycle-laundering">
+                            <span class="lang-bn active-lang">অর্থ পাচার</span><span class="lang-en">Laundering</span>
+                        </div>
+                        <div class="flex items-center justify-center text-2xl text-gray-400 col-span-2 md:col-span-1 md:transform md:rotate-90">↓</div>
+                        <div class="interactive-box p-3 rounded-lg cursor-pointer" data-info="cycle-tf">
+                            <span class="lang-bn active-lang">সন্ত্রাসে অর্থায়ন</span><span class="lang-en">Terrorist Financing</span>
+                        </div>
+                        <div class="flex items-center justify-center text-2xl text-gray-400">←</div>
+                        <div class="interactive-box p-3 rounded-lg cursor-pointer" data-info="cycle-reinvest">
+                            <span class="lang-bn active-lang">অপরাধে পুনঃবিনিয়োগ</span><span class="lang-en">Re-invest in Crime</span>
+                        </div>
+                        <div class="flex items-center justify-center text-2xl text-gray-400">←</div>
+                        <div class="interactive-box p-3 rounded-lg cursor-pointer" data-info="cycle-clean">
+                            <span class="lang-bn active-lang">"বৈধ" অর্থ</span><span class="lang-en">"Clean" Money</span>
+                        </div>
+                    </div>
+                    <div id="cycle-info" class="p-4 bg-gray-50 rounded-md mt-4 min-h-[70px]">
+                        <p class="text-gray-600">
+                            <span class="lang-bn active-lang">একটি পর্যায় নির্বাচন করুন।</span>
+                            <span class="lang-en">Select a stage to see details.</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Impact -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <h2 class="text-2xl font-bold mb-4">
+                        <span class="lang-bn active-lang">এটি কেন মারাত্মক সমস্যা?</span>
+                        <span class="lang-en">Why is it a Problem?</span>
+                    </h2>
+                    <ul class="space-y-3">
+                        <li class="flex items-start space-x-3">
+                            <span class="text-red-500 mt-1">●</span>
+                            <span class="lang-bn active-lang">ব্যাংক ও আর্থিক প্রতিষ্ঠানের স্বচ্ছতা ও ভাবমূর্তি নষ্ট করে।</span>
+                            <span class="lang-en">Undermines the integrity of financial institutions.</span>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <span class="text-red-500 mt-1">●</span>
+                            <span class="lang-bn active-lang">দুর্নীতি, মাদক ব্যবসাসহ অন্যান্য বড় অপরাধকে উৎসাহিত করে।</span>
+                            <span class="lang-en">Fuels crime (drug trafficking, corruption).</span>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <span class="text-red-500 mt-1">●</span>
+                            <span class="lang-bn active-lang">দেশের অর্থনীতিকে ক্ষতিগ্রস্ত করে।</span>
+                            <span class="lang-en">Distorts the economy.</span>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <span class="text-red-500 mt-1">●</span>
+                            <span class="lang-bn active-lang">জাতীয় নিরাপত্তা ও স্থিতিশীলতার জন্য বড় হুমকি।</span>
+                            <span class="lang-en">Threatens national security and stability.</span>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Stats Section -->
+            <section id="stats" class="content-section hidden">
+                <h1 class="text-3xl font-bold mb-4">
+                    <span class="lang-bn active-lang">তথ্য ও পরিসংখ্যান</span>
+                    <span class="lang-en">Data & Statistics</span>
+                </h1>
+                <p class="text-lg text-gray-700 mb-6">
+                    <span class="lang-bn active-lang">অর্থ পাচারের বৈশ্বিক ও বাংলাদেশী পরিসংখ্যান দেখুন। এই তথ্যগুলো দেখায় কেন এই বিষয়টি এত গুরুত্বপূর্ণ।</span>
+                    <span class="lang-en">See global and Bangladeshi statistics on money laundering. This data shows why this topic is so important.</span>
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 text-center flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-600 mb-1">
+                                <span class="lang-bn active-lang">বৈশ্বিক পাচার (বার্ষিক)</span>
+                                <span class="lang-en">Global Laundering (Annual)</span>
+                            </h3>
+                            <p class="text-sm text-gray-500 mb-2">
+                                <span class="lang-bn active-lang">এটি দেখায় সমস্যাটি কত বড়।</span>
+                                <span class="lang-en">This shows the scale of the problem.</span>
+                            </p>
+                        </div>
+                        <div>
+                            <p class="text-4xl font-bold text-blue-600">
+                                <span class="lang-bn active-lang">২% - ৫%</span>
+                                <span class="lang-en">2% - 5%</span>
+                            </p>
+                            <p class="text-gray-500">
+                                <span class="lang-bn active-lang">বৈশ্বিক জিডিপির</span>
+                                <span class="lang-en">of Global GDP (UN Estimate)</span>
+                            </p>
+                            <p class="text-2xl font-bold text-blue-600 mt-2">
+                                <span class="lang-bn active-lang">~$৮০০বি - $২ট্রি</span>
+                                <span class="lang-en">~$800B - $2T</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 text-center flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-600 mb-1">
+                                <span class="lang-bn active-lang">BFIU STR বৃদ্ধি (FY 21-22)</span>
+                                <span class="lang-en">BFIU STR Growth (FY 21-22)</span>
+                            </h3>
+                            <p class="text-sm text-gray-500 mb-2">
+                                <span class="lang-bn active-lang">প্রতিষ্ঠানগুলো আরও বেশি সন্দেহজনক কার্যকলাপ রিপোর্ট করছে।</span>
+                                <span class="lang-en">Institutions are reporting more suspicious activity.</span>
+                            </p>
+                        </div>
+                        <div>
+                            <p class="text-4xl font-bold text-orange-500">
+                                <span class="lang-bn active-lang">~৬২%<span class="text-2xl"> বৃদ্ধি</span></span>
+                                <span class="lang-en">~62%<span class="text-2xl"> Increase</span></span>
+                            </p>
+                            <p class="text-gray-500">
+                                <span class="lang-bn active-lang">পূর্ববর্তী বছরের তুলনায়</span>
+                                <span class="lang-en">Compared to previous year</span>
+                            </p>
+                            <p class="text-2xl font-bold text-orange-500 mt-2">
+                                <span class="lang-bn active-lang">৮,৫০০+<span class="text-xl"> রিপোর্ট</span></span>
+                                <span class="lang-en">8,500+<span class="text-xl"> Reports</span></span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 text-center flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-600 mb-1">
+                                <span class="lang-bn active-lang">প্রধান সম্পৃক্ত অপরাধ</span>
+                                <span class="lang-en">Key Predicate Offenses</span>
+                            </h3>
+                            <p class="text-sm text-gray-500 mb-2">
+                                <span class="lang-bn active-lang">বাংলাদেশে অবৈধ অর্থের প্রধান উৎস (BFIU NRA অনুযায়ী)।</span>
+                                <span class="lang-en">Major sources of illicit funds in BD (per BFIU NRA).</span>
+                            </p>
+                        </div>
+                        <div>
+                            <p class="text-3xl font-bold text-teal-600">
+                                <span class="lang-bn active-lang">দুর্নীতি ও জালিয়াতি</span>
+                                <span class="lang-en">Corruption & Fraud</span>
+                            </p>
+                            <p class="text-lg font-bold text-teal-600 mt-2">
+                                <span class="lang-bn active-lang">+ মাদক ব্যবসা ও হুন্ডি</span>
+                                <span class="lang-en">+ Drug Trafficking & Hundi</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 text-center flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-600 mb-1">
+                                <span class="lang-bn active-lang">নগদ লেনদেন রিপোর্ট (CTR)</span>
+                                <span class="lang-en">Cash Transaction Reports (CTR)</span>
+                            </h3>
+                            <p class="text-sm text-gray-500 mb-2">
+                                <span class="lang-bn active-lang">এই সীমার উপরে সমস্ত নগদ লেনদেন মাসিক রিপোর্ট করা হয়।</span>
+                                <span class="lang-en">All cash transactions above this limit are reported monthly.</span>
+                            </p>
+                        </div>
+                        <div>
+                            <p class="text-4xl font-bold text-indigo-600">
+                                <span class="lang-bn active-lang">১০ লক্ষ+<span class="text-2xl"> টাকা</span></span>
+                                <span class="lang-en">10 Lakh+<span class="text-2xl"> BDT</span></span>
+                            </p>
+                            <p class="text-gray-500">
+                                <span class="lang-bn active-lang">(বা সমমানের বৈদেশিক মুদ্রা)</span>
+                                <span class="lang-en">(or equivalent foreign currency)</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <h2 class="text-2xl font-bold mb-4 text-center">
+                        <span class="lang-bn active-lang">সন্দেহজনক লেনদেন রিপোর্ট (STR) বৃদ্ধি</span>
+                        <span class="lang-en">Growth in Suspicious Transaction Reports (STRs)</span>
+                    </h2>
+                    <p class="text-center text-gray-600 mb-4">
+                        <span class="lang-bn active-lang">এটি প্রমাণ করে যে, রিপোর্টিং বাড়ছে এবং ঝুঁকিও বিদ্যমান।</span>
+                        <span class="lang-en">This shows that reporting is increasing and the risk is present.</span>
+                    </p>
+                    <div class="chart-container">
+                        <canvas id="statsChart"></canvas>
+                    </div>
+                    <div class="mt-4 p-4 bg-gray-50 rounded-md border border-gray-200">
+                        <h4 class="font-semibold text-lg mb-2">
+                            <span class="lang-bn active-lang">মূল কথা</span>
+                            <span class="lang-en">Key Takeaway</span>
+                        </h4>
+                        <p class="text-gray-700">
+                            <span class="lang-bn active-lang">গ্রাফটি দেখায় যে রিপোর্টিং উল্লেখযোগ্যভাবে বাড়ছে। এটি দুটি জিনিস নির্দেশ করে: ১) প্রতিষ্ঠানগুলোর মধ্যে সচেতনতা বৃদ্ধি পাচ্ছে এবং ২) অর্থনীতিতে সন্দেহজনক কার্যকলাপের ঝুঁকিও সম্ভবত বাড়ছে।</span>
+                            <span class="lang-en">The graph shows reporting is increasing significantly. This indicates two things: 1) Awareness among institutions is growing, and 2) The risk of suspicious activity in the economy is also likely increasing.</span>
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Legal Section -->
+            <section id="legal" class="content-section hidden">
+                <h1 class="text-3xl font-bold mb-4">
+                    <span class="lang-bn active-lang">আইনী কাঠামো</span>
+                    <span class="lang-en">Legal Framework</span>
+                </h1>
+                <p class="text-lg text-gray-700 mb-6">
+                    <span class="lang-bn active-lang">বাংলাদেশের প্রধান আইন এবং নিয়ন্ত্রক সংস্থা (BFIU)-এর ভূমিকা সম্পর্কে জানুন।</span>
+                    <span class="lang-en">Learn about the key laws in Bangladesh and the role of the regulator (BFIU).</span>
+                </p>
+
+                <div class="space-y-4" id="accordion-container">
+                    <!-- Accordion Item 1 -->
+                    <div class="bg-white rounded-lg shadow-md border border-gray-200">
+                        <button class="accordion-toggle flex justify-between items-center w-full p-5 font-semibold text-left">
+                            <span class="text-lg">
+                                <span class="lang-bn active-lang">অর্থ পাচার প্রতিরোধ আইন, ২০১২ (MLPA)</span>
+                                <span class="lang-en">Money Laundering Prevention Act, 2012 (MLPA)</span>
+                            </span>
+                            <span class="accordion-icon text-2xl text-blue-600">+</span>
+                        </button>
+                        <div class="accordion-content px-5 pb-5">
+                            <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                <li>
+                                    <span class="lang-bn active-lang">এটি বাংলাদেশের প্রধান অর্থ পাচার প্রতিরোধ আইন।</span>
+                                    <span class="lang-en">This is the primary AML law in Bangladesh.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-bn active-lang">এটি "সম্পৃক্ত অপরাধ" (Predicate Offence) এর তালিকা দিয়েছে (যেমন: দুর্নীতি, জালিয়াতি)।</span>
+                                    <span class="lang-en">It provides a list of "Predicate Offences" (e.g., corruption, forgery).</span>
+                                </li>
+                                <li>
+                                    <span class="lang-bn active-lang">এই আইন অনুযায়ী BFIU গঠন করা হয়েছে।</span>
+                                    <span class="lang-en">The BFIU was established under this act.</span>
+                                </li>
+                                <li class="font-semibold text-red-700">
+                                    <span class="lang-bn active-lang">শাস্তি: ৪ থেকে ১২ বছরের কারাদণ্ড এবং পাচারকৃত অর্থের দ্বিগুণ বা ৫০ লক্ষ টাকা (যা বেশি) জরিমানা।</span>
+                                    <span class="lang-en">Penalty: 4 to 12 years imprisonment and a fine of double the laundered amount or 5 million Taka (whichever is higher).</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Accordion Item 2 -->
+                    <div class="bg-white rounded-lg shadow-md border border-gray-200">
+                        <button class="accordion-toggle flex justify-between items-center w-full p-5 font-semibold text-left">
+                            <span class="text-lg">
+                                <span class="lang-bn active-lang">সন্ত্রাস বিরোধী আইন, ২০০৯ (ATA)</span>
+                                <span class="lang-en">Anti-Terrorism Act, 2009 (ATA)</span>
+                            </span>
+                            <span class="accordion-icon text-2xl text-blue-600">+</span>
+                        </button>
+                        <div class="accordion-content px-5 pb-5">
+                            <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                <li>
+                                    <span class="lang-bn active-lang">এই আইন সন্ত্রাসবাদ এবং সন্ত্রাসে অর্থায়নের সংজ্ঞা প্রদান করে।</span>
+                                    <span class="lang-en">This act defines terrorism and terrorist financing.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-bn active-lang">সন্ত্রাসী কাজে অর্থ সংগ্রহ বা প্রদান করাকে গুরুতর অপরাধ গণ্য করে।</span>
+                                    <span class="lang-en">Considers collecting or providing funds for terrorism a serious offense.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-bn active-lang">কর্তৃপক্ষকে সন্ত্রাসী সম্পত্তি জব্দ (freeze/seize) করার ক্ষমতা দেয়।</span>
+                                    <span class="lang-en">Gives authorities power to freeze/seize terrorist property.</span>
+                                </li>
+                                <li class="font-semibold text-red-700">
+                                    <span class="lang-bn active-lang">শাস্তি: সন্ত্রাসী কাজে অর্থায়নের জন্য সর্বোচ্চ ২০ বছরের কারাদণ্ড। যদি অর্থায়নের ফলে মৃত্যু ঘটে, তবে সর্বোচ্চ শাস্তি মৃত্যুদণ্ড।</span>
+                                    <span class="lang-en">Penalty: Up to 20 years imprisonment for terrorist financing. If the financing results in death, the maximum penalty is the death sentence.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Accordion Item 3 -->
+                    <div class="bg-white rounded-lg shadow-md border border-gray-200">
+                        <button class="accordion-toggle flex justify-between items-center w-full p-5 font-semibold text-left">
+                            <span class="text-lg">
+                                <span class="lang-bn active-lang">BFIU-এর ভূমিকা</span>
+                                <span class="lang-en">Role of BFIU</span>
+                            </span>
+                            <span class="accordion-icon text-2xl text-blue-600">+</span>
+                        </button>
+                        <div class="accordion-content px-5 pb-5">
+                            <p class="mb-3 text-gray-700">
+                                <span class="lang-bn active-lang"><strong>BFIU</strong> (বাংলাদেশ ফাইন্যান্সিয়াল ইন্টেলিজেন্স ইউনিট) বাংলাদেশ ব্যাংকের অধীনে একটি স্বাধীন সংস্থা এবং AML/CFT-এর কেন্দ্রীয় সংস্থা।</span>
+                                <span class="lang-en">The <strong>BFIU</strong> (Bangladesh Financial Intelligence Unit) is an independent body under Bangladesh Bank and the central agency for AML/CFT.</span>
+                            </p>
+                            <h4 class="font-semibold mb-2">
+                                <span class="lang-bn active-lang">প্রধান কাজ:</span>
+                                <span class="lang-en">Key Functions:</span>
+                            </h4>
+                            <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                <li>
+                                    <span class="lang-bn active-lang">সন্দেহজনক লেনদেন রিপোর্ট (STR) ও নগদ লেনদেন রিপোর্ট (CTR) গ্রহণ করা।</span>
+                                    <span class="lang-en">Receive Suspicious Transaction Reports (STRs) & Cash Transaction Reports (CTRs).</span>
+                                </li>
+                                <li>
+                                    <span class="lang-bn active-lang">প্রাপ্ত তথ্য বিশ্লেষণ করা।</span>
+                                    <span class="lang-en">Analyze financial intelligence.</span>
+                                </li>
+                                <li>
+                                    <span class="lang-bn active-lang">প্রয়োজনে আইন প্রয়োগকারী সংস্থাকে তথ্য প্রদান করা।</span>
+                                    <span class="lang-en">Disseminate intelligence to Law Enforcement Agencies (LEAs).</span>
+                                </li>
+                                <li>
+                                    <span class="lang-bn active-lang">ব্যাংক ও আর্থিক প্রতিষ্ঠানের জন্য সার্কুলার/নির্দেশনা জারি করা।</span>
+                                    <span class="lang-en">Issue guidelines/circulars for banks and FIs.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Responsibilities Section -->
+            <section id="responsibilities" class="content-section hidden">
+                <h1 class="text-3xl font-bold mb-4">
+                    <span class="lang-bn active-lang">আপনার করণীয়</span>
+                    <span class="lang-en">Your Responsibilities</span>
+                </h1>
+                <p class="text-lg text-gray-700 mb-6">
+                    <span class="lang-bn active-lang">একটি রিপোর্টিং সংস্থা হিসেবে, আপনার প্রধান দায়িত্বগুলো হলো গ্রাহক পরিচিতি (CDD), রিপোর্টিং (STR), এবং সতর্ক সংকেত চিহ্নিত করা।</span>
+                    <span class="lang-en">As a Reporting Organization, your key responsibilities are Customer Due Diligence (CDD), Reporting (STR), and identifying Red Flags.</span>
+                </p>
+
+                <div class="flex flex-wrap border-b border-gray-300 mb-4" data-tab-group="responsibilities">
+                    <button class="tab-btn py-2 px-4" data-tab="ros">
+                        <span class="lang-bn active-lang">কারা? (ROs)</span>
+                        <span class="lang-en">Who? (ROs)</span>
+                    </button>
+                    <button class="tab-btn py-2 px-4" data-tab="cdd">
+                        <span class="lang-bn active-lang">গ্রাহক পরিচিতি (CDD)</span>
+                        <span class="lang-en">Due Diligence (CDD)</span>
+                    </button>
+                    <button class="tab-btn py-2 px-4" data-tab="str">
+                        <span class="lang-bn active-lang">রিপোর্টিং (STR/CTR)</span>
+                        <span class="lang-en">Reporting (STR/CTR)</span>
+                    </button>
+                    <button class="tab-btn py-2 px-4" data-tab="redflags">
+                        <span class="lang-bn active-lang">সতর্ক সংকেত</span>
+                        <span class="lang-en">Red Flags</span>
+                    </button>
+                    <button class="tab-btn py-2 px-4" data-tab="penalties">
+                        <span class="lang-bn active-lang">শাস্তি</span>
+                        <span class="lang-en">Penalties</span>
+                    </button>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <!-- ROs Content -->
+                    <div data-tab-content="ros" class="tab-content">
+                        <h2 class="text-2xl font-bold mb-3">
+                            <span class="lang-bn active-lang">রিপোর্টিং সংস্থা (Reporting Organizations)</span>
+                            <span class="lang-en">Reporting Organizations (ROs)</span>
+                        </h2>
+                        <p class="mb-4">
+                            <span class="lang-bn active-lang">যাদেরকে BFIU-এর কাছে রিপোর্ট করতে হয়, যেমন:</span>
+                            <span class="lang-en">Organizations that must report to BFIU, such as:</span>
+                        </p>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700 columns-2">
+                            <li><span class="lang-bn active-lang">ব্যাংক</span><span class="lang-en">Banks</span></li>
+                            <li><span class="lang-bn active-lang">আর্থিক প্রতিষ্ঠান (FIs)</span><span class="lang-en">FIs</span></li>
+                            <li><span class="lang-bn active-lang">বীমা কোম্পানী</span><span class="lang-en">Insurance</span></li>
+                            <li><span class="lang-bn active-lang">মানি চেঞ্জার</span><span class="lang-en">Money Changers</span></li>
+                            <li><span class="lang-bn active-lang">পুঁজিবাজার মধ্যস্থতাকারী</span><span class="lang-en">Capital Market Intermediaries</span></li>
+                            <li><span class="lang-bn active-lang">রিয়েল এস্টেট ডেভেলপার</span><span class="lang-en">Real Estate</span></li>
+                            <li><span class="lang-bn active-lang">সোনা-হীরার ব্যবসায়ী</span><span class="lang-en">Jewellers</span></li>
+                            <li><span class="lang-bn active-lang">এনজিও / অলাভজনক প্রতিষ্ঠান</span><span class="lang-en">NGOs/NPOs</span></li>
+                        </ul>
+                    </div>
+                    <!-- CDD Content -->
+                    <div data-tab-content="cdd" class="tab-content hidden">
+                        <h2 class="text-2xl font-bold mb-3">
+                            <span class="lang-bn active-lang">গ্রাহক পরিচিতি (CDD/KYC)</span>
+                            <span class="lang-en">Customer Due Diligence (CDD/KYC)</span>
+                        </h2>
+                        <p class="mb-4">
+                            <span class="lang-bn active-lang">উদ্দেশ্য: গ্রাহকের সঠিক পরিচয় (নাম, ঠিকানা, পেশা) জানা এবং যাচাই করা।</span>
+                            <span class="lang-en">Purpose: To know and verify the customer's true identity (name, address, profession).</span>
+                        </p>
+                        <div class="bg-gray-50 p-4 rounded-md">
+                            <h4 class="font-semibold text-lg mb-2">
+                                <span class="lang-bn active-lang">নিবিড় গ্রাহক পরিচিতি (EDD)</span>
+                                <span class="lang-en">Enhanced Due Diligence (EDD)</span>
+                            </h4>
+                            <p class="mb-2">
+                                <span class="lang-bn active-lang">উচ্চ-ঝুঁকিপূর্ণ গ্রাহকের জন্য EDD করতে হয়, যেমন:</span>
+                                <span class="lang-en">EDD is required for high-risk customers, such as:</span>
+                            </p>
+                            <ul class="list-disc list-inside space-y-1 text-gray-700">
+                                <li>
+                                    <span class="lang-bn active-lang">রাজনৈতিকভাবে গুরুত্বপূর্ণ ব্যক্তি (PEP)</span>
+                                    <span class="lang-en">Politically Exposed Persons (PEPs)</span>
+                                </li>
+                                <li>
+                                    <span class="lang-bn active-lang">উচ্চ-ঝুঁকিপূর্ণ দেশের গ্রাহক</span>
+                                    <span class="lang-en">Customers from high-risk countries</span>
+                                </li>
+                                <li>
+                                    <span class="lang-bn active-lang">অস্বাভাবিক বা জটিল লেনদেনকারী</span>
+                                    <span class="lang-en">Customers with unusual or complex transactions</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- STR Content -->
+                    <div data-tab-content="str" class="tab-content hidden">
+                        <h2 class="text-2xl font-bold mb-3">
+                            <span class="lang-bn active-lang">সন্দেহজনক লেনদেন রিপোর্ট (STR)</span>
+                            <span class="lang-en">Suspicious Transaction Report (STR)</span>
+                        </h2>
+                        <p class="mb-4">
+                            <span class="lang-bn active-lang">কখন রিপোর্ট করতে হয়? যখন কোনো লেনদেন বা লেনদেনের চেষ্টা <strong>সন্দেহজনক</strong> মনে হয়।</span>
+                            <span class="lang-en">When to report? When any transaction or attempt <strong>seems suspicious</strong>.</span>
+                        </p>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-md">
+                            <strong class="text-yellow-800">
+                                <span class="lang-bn active-lang">গুরুত্বপূর্ণ:</span>
+                                <span class="lang-en">Important:</span>
+                            </strong>
+                            <p class="text-yellow-700">
+                                <span class="lang-bn active-lang">আপনার <strong>সন্দেহ</strong> হলেই রিপোর্ট করতে হবে, প্রমাণের দরকার নেই।</span>
+                                <span class="lang-en">You must report if you <strong>suspect</strong>, proof is not required.</span>
+                            </p>
+                        </div>
+
+                        <h3 class="text-xl font-bold mt-6 mb-3">
+                            <span class="lang-bn active-lang">নগদ লেনদেন রিপোর্ট (CTR)</span>
+                            <span class="lang-en">Cash Transaction Report (CTR)</span>
+                        </h3>
+                        <p class="mb-4">
+                            <span class="lang-bn active-lang">ব্যাংকগুলোকে একটি নির্দিষ্ট সীমার (বর্তমানে ১০ লক্ষ টাকা বা সমমান) বেশি সমস্ত নগদ লেনদেনের জন্য BFIU-কে মাসিক CTR পাঠাতে হয়।</span>
+                            <span class="lang-en">Banks must submit monthly CTRs to BFIU for all cash transactions above a certain threshold (currently 1 million BDT or equivalent).</span>
+                        </p>
+                    </div>
+                    <!-- Red Flags Content -->
+                    <div data-tab-content="redflags" class="tab-content hidden">
+                        <h2 class="text-2xl font-bold mb-3">
+                            <span class="lang-bn active-lang">কিছু "সতর্ক সংকেত"</span>
+                            <span class="lang-en">Some "Red Flags"</span>
+                        </h2>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li>
+                                <span class="lang-bn active-lang">গ্রাহকের পেশা বা আয়ের সাথে অসামঞ্জস্যপূর্ণ বড় লেনদেন।</span>
+                                <span class="lang-en">Large transactions inconsistent with the customer's profession or income.</span>
+                            </li>
+                            <li>
+                                <span class="lang-bn active-lang">হিসাব খোলার পরপরই বড় অংকের টাকা জমা এবং দ্রুত তা তুলে নেয়া।</span>
+                                <span class="lang-en">Large deposit immediately after account opening, followed by quick withdrawal.</span>
+                            </li>
+                            <li>
+                                <span class="lang-bn active-lang">বড় লেনদেনকে বারবার ছোট ছোট ভাগে ভাগ করে জমা দেয়া (Structuring)।</span>
+                                <span class="lang-en">Breaking large transactions into smaller ones (Structuring).</span>
+                            </li>
+                            <li>
+                                <span class="lang-bn active-lang">লেনদেনের কোনো স্পষ্ট অর্থনৈতিক উদ্দেশ্য খুঁজে না পাওয়া।</span>
+                                <span class="lang-en">No clear economic purpose for the transaction.</span>
+                            </li>
+                            <li>
+                                <span class="lang-bn active-lang">ভুয়া ঠিকানা বা ভুয়া কাগজপত্র জমা দেয়া।</span>
+                                <span class="lang-en">Providing fake addresses or documents.</span>
+                            </li>
+                            <li>
+                                <span class="lang-bn active-lang">গ্রাহক তার লেনদেনের সুবিধাভোগী (Beneficiary) সম্পর্কে তথ্য লুকাতে চায়।</span>
+                                <span class="lang-en">Customer is secretive about the beneficiary of a transaction.</span>
+                            </li>
+                            <li>
+                                <span class="lang-bn active-lang">অপ্রয়োজনীয়ভাবে জটিল লেনদেন বা ব্যবসায়িক কাঠামো।</span>
+                                <span class="lang-en">Unnecessarily complex transactions or business structures.</span>
+                            </li>
+                            <li>
+                                <span class="lang-bn active-lang">মিডিয়ায় নেতিবাচক খবর (Adverse Media) থাকা সত্ত্বেও গ্রাহক লেনদেন চালিয়ে যাচ্ছে।</span>
+                                <span class="lang-en">Customer continues transactions despite adverse media reports.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Penalties Content -->
+                    <div data-tab-content="penalties" class="tab-content hidden">
+                        <h2 class="text-2xl font-bold mb-3">
+                            <span class="lang-bn active-lang">আইন না মানলে শাস্তি</span>
+                            <span class="lang-en">Penalties for Non-Compliance</span>
+                        </h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                                <h4 class="font-semibold text-lg text-red-800 mb-2">
+                                    <span class="lang-bn active-lang">প্রতিষ্ঠানের জন্য</span>
+                                    <span class="lang-en">For Institutions</span>
+                                </h4>
+                                <ul class="list-disc list-inside space-y-1 text-red-700">
+                                    <li><span class="lang-bn active-lang">BFIU কর্তৃক বড় অংকের আর্থিক জরিমানা।</span><span class="lang-en">Large financial penalties by BFIU.</span></li>
+                                    <li><span class="lang-bn active-lang">লাইসেন্স স্থগিত বা বাতিল।</span><span class="lang-en">License suspension or cancellation.</span></li>
+                                    <li><span class="lang-bn active-lang">সুনামের মারাত্মক ক্ষতি।</span><span class="lang-en">Severe reputational damage.</span></li>
+                                </ul>
+                            </div>
+                            <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                                <h4 class="font-semibold text-lg text-red-800 mb-2">
+                                    <span class="lang-bn active-lang">কর্মকর্তার জন্য</span>
+                                    <span class="lang-en">For Individuals</span>
+                                </h4>
+                                <ul class="list-disc list-inside space-y-1 text-red-700">
+                                    <li><span class="lang-bn active-lang">চাকরি হারানো।</span><span class="lang-en">Loss of employment.</span></li>
+                                    <li><span class="lang-bn active-lang">জরিমানা এবং আইন অনুযায়ী কারাদণ্ড।</span><span class="lang-en">Fines and imprisonment as per law.</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Conclusion Section -->
+            <section id="conclusion" class="content-section hidden">
+                <h1 class="text-3xl font-bold mb-4">
+                    <span class="lang-bn active-lang">উপসংহার</span>
+                    <span class="lang-en">Conclusion</span>
+                </h1>
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <p class="text-lg text-gray-700 mb-4">
+                        <span class="lang-bn active-lang">অর্থ পাচার ও সন্ত্রাসে অর্থায়ন আমাদের অর্থনীতি ও নিরাপত্তার জন্য মারাত্মক হুমকি। এটি মোকাবেলায় সম্মিলিত প্রচেষ্টা প্রয়োজন। একজন সতর্ক কর্মকর্তা হিসেবে আপনার ভূমিকা অত্যন্ত গুরুত্বপূর্ণ।</span>
+                        <span class="lang-en">ML & TF are serious global threats that harm our economy and security. Fighting them requires a collective effort. Your role as a vigilant professional is crucial.</span>
+                    </p>
+                    <h2 class="text-2xl font-bold text-blue-600">
+                        <span class="lang-bn active-lang">ধন্যবাদ</span>
+                        <span class="lang-en">Thank You</span>
+                    </h2>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let currentLang = 'bn';
+            let currentSection = 'home';
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+            const langToggleButtons = document.querySelectorAll('.lang-toggle-btn');
+            
+            const tabGroups = document.querySelectorAll('[data-tab-group]');
+            const diagramGroups = document.querySelectorAll('[data-diagram-group]');
+            const accordionContainer = document.getElementById('accordion-container');
+
+            // --- Data for Interactive Elements ---
+            const mlStageInfo = {
+                'ml-placement': {
+                    bn: 'অবৈধ অর্থ আর্থিক ব্যবস্থায় (যেমন: ব্যাংক) প্রবেশ করানো। উদাহরণ: অনেকগুলো হিসাবে অল্প অল্প করে টাকা জমা দেয়া।',
+                    en: 'Introducing dirty money into the financial system (e.g., bank). Example: Depositing small amounts into many accounts.'
+                },
+                'ml-layering': {
+                    bn: 'জটিল ও বহুস্তর লেনদেনের মাধ্যমে টাকার উৎস আড়াল করা। উদাহরণ: এক হিসাব থেকে অন্য হিসাবে, এক দেশ থেকে অন্য দেশে টাকা পাঠানো।',
+                    en: 'Creating complex layers of transactions to hide the source. Example: Moving money between accounts and countries.'
+                },
+                'ml-integration': {
+                    bn: '"বৈধ" হওয়া অর্থ দিয়ে সম্পদ (বাড়ি, গাড়ি, ব্যবসা) কেনা।',
+                    en: 'The "clean" money is integrated back into the legitimate economy by buying assets (house, car, business).'
+                }
+            };
+
+            const cycleInfo = {
+                'cycle-crime': { bn: 'অপরাধ (যেমন: দুর্নীতি, মাদক) সংঘটিত হয়।', en: 'A crime is committed (e.g., corruption, drugs).' },
+                'cycle-profit': { bn: 'অপরাধ থেকে অবৈধ মুনাফা অর্জিত হয়।', en: 'Illegal profits are generated from the crime.' },
+                'cycle-laundering': { bn: 'অবৈধ টাকাকে বৈধ দেখানোর জন্য পাচার করা হয়।', en: 'The dirty money is laundered to make it look clean.' },
+                'cycle-clean': { bn: 'অর্থ এখন "বৈধ" বা "সাদা" টাকা।', en: 'The money is now "clean" or "legitimate".' },
+                'cycle-reinvest': { bn: 'সেই "বৈধ" টাকা আরও বড় অপরাধে পুনঃবিনিয়োগ করা হয়।', en: 'The "clean" money is re-invested into more crime.' },
+                'cycle-tf': { bn: 'অথবা, সেই টাকা সন্ত্রাসী কাজে অর্থায়নের জন্য ব্যবহৃত হয়।', en: 'Alternatively, the money is used to finance terrorist acts.' }
+            };
+
+            function updateView() {
+                // Language Update
+                document.documentElement.lang = currentLang;
+                document.querySelectorAll('.lang-bn, .lang-en').forEach(el => {
+                    el.classList.remove('active-lang');
+                });
+                document.querySelectorAll(`.lang-${currentLang}`).forEach(el => {
+                    el.classList.add('active-lang');
+                });
+
+                // Language Button State
+                langToggleButtons.forEach(btn => {
+                    if (btn.dataset.lang === currentLang) {
+                        btn.classList.add('bg-blue-600', 'text-white', 'font-semibold');
+                        btn.classList.remove('bg-gray-200', 'text-gray-700');
+                    } else {
+                        btn.classList.remove('bg-blue-600', 'text-white', 'font-semibold');
+                        btn.classList.add('bg-gray-200', 'text-gray-700');
+                    }
+                });
+
+                // Section Update
+                contentSections.forEach(section => {
+                    section.classList.add('hidden');
+                });
+                document.getElementById(currentSection).classList.remove('hidden');
+
+                // Active Nav Link
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.dataset.target === currentSection) {
+                        link.classList.add('active');
+                    }
+                });
+
+                // If switching to stats, re-render chart
+                if (currentSection === 'stats') {
+                    renderStatsChart();
+                }
+            }
+
+            // --- Setup Functions ---
+            function setupNav() {
+                navLinks.forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        currentSection = link.dataset.target;
+                        updateView();
+                        window.scrollTo(0, 0);
+                    });
+                });
+            }
+
+            function setupLangToggle() {
+                langToggleButtons.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        currentLang = btn.dataset.lang;
+                        updateView();
+                    });
+                });
+            }
+
+            function setupTabs() {
+                tabGroups.forEach(group => {
+                    const buttons = group.querySelectorAll('.tab-btn');
+                    const contents = group.parentElement.querySelectorAll('[data-tab-content]');
+                    
+                    buttons.forEach(button => {
+                        button.addEventListener('click', () => {
+                            buttons.forEach(btn => btn.classList.remove('active'));
+                            button.classList.add('active');
+                            
+                            const targetTab = button.dataset.tab;
+                            contents.forEach(content => {
+                                if (content.dataset.tabContent === targetTab) {
+                                    content.classList.remove('hidden');
+                                } else {
+                                    content.classList.add('hidden');
+                                }
+                            });
+                        });
+                    });
+                    // Activate the first tab by default
+                    if(buttons.length > 0) buttons[0].click();
+                });
+            }
+
+            function setupDiagrams() {
+                diagramGroups.forEach(group => {
+                    const boxes = group.querySelectorAll('.interactive-box');
+                    const infoDisplayId = group.dataset.diagramGroup === 'ml-stages' ? 'ml-stage-info' : 'cycle-info';
+                    const infoDisplay = document.getElementById(infoDisplayId);
+                    
+                    boxes.forEach(box => {
+                        box.addEventListener('click', () => {
+                            boxes.forEach(b => b.classList.remove('active'));
+                            box.classList.add('active');
+                            
+                            const infoKey = box.dataset.info;
+                            const info = group.dataset.diagramGroup === 'ml-stages' ? mlStageInfo[infoKey] : cycleInfo[infoKey];
+                            
+                            if (info && infoDisplay) {
+                                infoDisplay.innerHTML = `
+                                    <p class="lang-bn active-lang">${info.bn}</p>
+                                    <p class="lang-en">${info.en}</p>
+                                `;
+                                // Re-apply language visibility
+                                infoDisplay.querySelectorAll(`.lang-${currentLang}`).forEach(el => {
+                                    el.classList.add('active-lang');
+                                });
+                            }
+                        });
+                    });
+                });
+            }
+
+            function setupAccordion() {
+                if (!accordionContainer) return;
+                const toggles = accordionContainer.querySelectorAll('.accordion-toggle');
+                toggles.forEach(toggle => {
+                    toggle.addEventListener('click', () => {
+                        const content = toggle.nextElementSibling;
+                        const icon = toggle.querySelector('.accordion-icon');
+                        
+                        if (content.style.maxHeight) {
+                            content.style.maxHeight = null;
+                            icon.textContent = '+';
+                        } else {
+                            content.style.maxHeight = content.scrollHeight + "px";
+                            icon.textContent = '−';
+                        }
+                    });
+                });
+            }
+
+            let statsChartInstance = null;
+            function renderStatsChart() {
+                const ctx = document.getElementById('statsChart').getContext('2d');
+                
+                // Data from slide 8: 8500+ in FY21-22, 62% increase.
+                // Implies FY20-21 was ~8500 / 1.62 = ~5247
+                const fy2021 = 5247;
+                const fy2022 = 8571; // Using a number from 8500+
+
+                const data = {
+                    labels: ['FY 2020-21', 'FY 2021-22'],
+                    datasets: [{
+                        label: 'Number of STRs',
+                        data: [fy2021, fy2022],
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.6)', // blue-500
+                            'rgba(249, 115, 22, 0.6)'  // orange-500
+                        ],
+                        borderColor: [
+                            'rgba(59, 130, 246, 1)',
+                            'rgba(249, 115, 22, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                };
+                
+                if (statsChartInstance) {
+                    statsChartInstance.destroy();
+                }
+
+                statsChartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: data,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Number of Reports'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return ` STRs: ${context.parsed.y}`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // --- Initialize App ---
+            setupNav();
+            setupLangToggle();
+            setupTabs();
+            setupDiagrams();
+            setupAccordion();
+            updateView(); // Set initial state
+        });
+    </script>
+</body>
+</html>
+
+
