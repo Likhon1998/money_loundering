@@ -75,13 +75,21 @@
             overflow: hidden;
             transition: max-height 0.3s ease-out;
         }
+        /* ### NEW CSS FOR MOBILE SIDEBAR ### */
+        .sidebar-open {
+            transform: translateX(0);
+        }
     </style>
 </head>
 <body class="bg-stone-50 text-slate-900">
 
     <div class="flex flex-col md:flex-row min-h-screen">
-        <nav class="w-full md:w-64 md:fixed md:h-full bg-white shadow-lg p-4 md:p-6 z-10 md:overflow-y-auto">
-            <div class="flex justify-center mb-4">
+        <nav class="w-64 fixed h-full top-0 left-0 bg-white shadow-lg p-4 md:p-6 z-30 md:overflow-y-auto transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
+            <button id="menu-close-btn" class="md:hidden absolute top-4 right-4 text-slate-900">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            
+            <div class="flex justify-center mb-4 mt-8 md:mt-0">
                 <img src="assets/logo2.png" alt="DSK Logo" class="h-16 w-auto" onerror="this.alt='DSK Logo'; this.src='https://placehold.co/150x60/0033a0/ffffff?text=DSK+Logo&font=sans';">
             </div>
             <h1 class="text-xl font-bold mb-4 text-center md:text-left">
@@ -136,8 +144,20 @@
             </ul>
         </nav>
 
-        <main class="w-full md:ml-64 p-6 md:p-10">
+        <div id="sidebar-overlay" class="md:hidden fixed inset-0 bg-black opacity-50 z-20 hidden"></div>
+
+        <main class="w-full md:ml-64 pt-20 md:pt-6 p-6 md:p-10">
             
+            <div class="md:hidden flex justify-between items-center p-4 bg-white shadow-md fixed top-0 left-0 right-0 z-10">
+                <button id="menu-toggle-btn" class="text-slate-900">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+                <h1 class="text-lg font-bold text-center">
+                    <span class="lang-bn active-lang">অর্থ পাচার প্রতিরোধ</span>
+                    <span class="lang-en">AML/CFT Prevention</span>
+                </h1>
+                <div class="w-6"></div> </div>
+
             <section id="home" class="content-section">
                 <h1 class="text-3xl md:text-4xl font-bold mb-4">
                     <span class="lang-bn active-lang">অর্থ পাচার ও সন্ত্রাসে অর্থায়ন প্রতিরোধ</span>
@@ -832,7 +852,7 @@
             </section>
             
             <section id="ngo-focus" class="content-section hidden">
-                <h1 class="text-3xl font-bold mb-4">
+                <h1 class="text-3xl font-bold mb-4 text-blue-600">
                     <span class="lang-bn active-lang">এনজিও/এনপিও খাতের জন্য বিশেষ নির্দেশিকা</span>
                     <span class="lang-en">Special Focus: NGO/NPO Sector</span>
                 </h1>
@@ -843,7 +863,7 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                     <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                        <h2 class="text-2xl font-bold mb-4">
+                        <h2 class="text-2xl font-bold mb-4 text-red-600">
                             <span class="lang-bn active-lang">মানি লন্ডারিং ও সন্ত্রাসে অর্থায়নের প্রভাব (Impact)</span>
                             <span class="lang-en">Impact of Money Laundering & Terrorist Financing</span>
                         </h2>
@@ -856,7 +876,7 @@
                         </ul>
                     </div>
                     <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                        <h2 class="text-2xl font-bold mb-4">
+                        <h2 class="text-2xl font-bold mb-4 text-green-600">
                             <span class="lang-bn active-lang">প্রতিরোধ বা সুরক্ষার উপায় (Prevention)</span>
                             <span class="lang-en">Prevention & Protection Measures</span>
                         </h2>
@@ -874,7 +894,7 @@
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
                     <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                        <h2 class="text-2xl font-bold mb-4">
+                        <h2 class="text-2xl font-bold mb-4 text-orange-500">
                             <span class="lang-bn active-lang">হুন্ডি ও এনজিও</span>
                             <span class="lang-en">Hundi & NGOs</span>
                         </h2>
@@ -892,7 +912,7 @@
                     </div>
                     
                     <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                        <h2 class="text-2xl font-bold mb-4">
+                        <h2 class="text-2xl font-bold mb-4 text-blue-600">
                             <span class="lang-bn active-lang">CAMLCO কী?</span>
                             <span class="lang-en">What is a CAMLCO?</span>
                         </h2>
@@ -907,7 +927,7 @@
                     </div>
 
                     <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                        <h2 class="text-2xl font-bold mb-4">
+                        <h2 class="text-2xl font-bold mb-4 text-indigo-600">
                             <span class="lang-bn active-lang">FATF ও এনজিও</span>
                             <span class="lang-en">FATF & NGOs</span>
                         </h2>
@@ -926,7 +946,7 @@
                     
                     <div class="bg-white rounded-lg shadow-md border border-gray-200">
                         <button class="accordion-toggle flex justify-between items-center w-full p-5 font-semibold text-left">
-                            <span class="text-lg">
+                            <span class="text-lg text-blue-700">
                                 <span class="lang-bn active-lang">BFIU/BB নির্দেশিকা (এনজিও/এনপিও) - সারসংক্ষেপ</span>
                                 <span class="lang-en">BFIU/BB Guidelines (NGO/NPO) - Summary</span>
                             </span>
@@ -982,7 +1002,7 @@
 
                     <div class="bg-white rounded-lg shadow-md border border-gray-200">
                         <button class="accordion-toggle flex justify-between items-center w-full p-5 font-semibold text-left">
-                            <span class="text-lg">
+                            <span class="text-lg text-blue-700">
                                 <span class="lang-bn active-lang">এনজিও'র জন্য AML/CFT চেকলিস্ট</span>
                                 <span class="lang-en">AML/CFT Checklist for NGOs</span>
                             </span>
@@ -1143,6 +1163,12 @@
             
             const tabGroups = document.querySelectorAll('[data-tab-group]');
             const diagramGroups = document.querySelectorAll('[data-diagram-group]');
+
+            // ### NEW: Mobile Menu Elements ###
+            const menuToggleBtn = document.getElementById('menu-toggle-btn');
+            const menuCloseBtn = document.getElementById('menu-close-btn');
+            const sidebar = document.querySelector('nav');
+            const sidebarOverlay = document.getElementById('sidebar-overlay');
             
             // --- Data for Interactive Elements ---
             const mlStageInfo = {
@@ -1219,13 +1245,48 @@
             }
 
             // --- Setup Functions ---
+
+            // ### NEW: Mobile Menu Function ###
+            function setupMobileMenu() {
+                if (menuToggleBtn) {
+                    menuToggleBtn.addEventListener('click', () => {
+                        sidebar.classList.add('sidebar-open');
+                        sidebarOverlay.classList.remove('hidden');
+                    });
+                }
+
+                if (menuCloseBtn) {
+                    menuCloseBtn.addEventListener('click', () => {
+                        sidebar.classList.remove('sidebar-open');
+                        sidebarOverlay.classList.add('hidden');
+                    });
+                }
+
+                if (sidebarOverlay) {
+                    sidebarOverlay.addEventListener('click', () => {
+                        sidebar.classList.remove('sidebar-open');
+                        sidebarOverlay.classList.add('hidden');
+                    });
+                }
+
+                // Also close menu when a nav link is clicked on mobile
+                navLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        if (window.innerWidth < 768) { // md breakpoint
+                            sidebar.classList.remove('sidebar-open');
+                            sidebarOverlay.classList.add('hidden');
+                        }
+                    });
+                });
+            }
+
             function setupNav() {
                 navLinks.forEach(link => {
                     link.addEventListener('click', (e) => {
                         e.preventDefault();
                         currentSection = link.dataset.target;
                         updateView();
-                        window.scrollTo(0, 0);
+                        window.scrollTo(0, 0); // Scroll to top of content
                     });
                 });
             }
@@ -1294,9 +1355,6 @@
                 });
             }
 
-            // ### MODIFIED JAVASCRIPT ###
-            // This function now finds ALL accordion toggles on the page,
-            // not just ones inside a specific container.
             function setupAccordion() {
                 const toggles = document.querySelectorAll('.accordion-toggle'); // Select all toggles
                 toggles.forEach(toggle => {
@@ -1327,7 +1385,6 @@
                     });
                 });
             }
-            // ### END OF MODIFICATION ###
 
             let statsChartInstance = null;
             function renderStatsChart() {
@@ -1391,6 +1448,7 @@
             }
 
             // --- Initialize App ---
+            setupMobileMenu(); // ### Call new function
             setupNav();
             setupLangToggle();
             setupTabs();
