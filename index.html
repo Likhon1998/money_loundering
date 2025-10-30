@@ -11,80 +11,77 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Inter', 'Noto Sans Bengali', sans-serif;
-        }
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 300px;
-            max-height: 400px;
-        }
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 400px;
-            }
-        }
-        .lang-en, .lang-bn {
-            display: none;
-        }
-        .lang-en.active-lang, .lang-bn.active-lang {
-            display: inline-block;
-        }
-        p .lang-en.active-lang, p .lang-bn.active-lang,
-        li .lang-en.active-lang, li .lang-bn.active-lang,
-        span .lang-en.active-lang, span .lang-bn.active-lang,
-        strong .lang-en.active-lang, strong .lang-bn.active-lang,
-        h1 .lang-en.active-lang, h1 .lang-bn.active-lang,
-        h2 .lang-en.active-lang, h2 .lang-bn.active-lang,
-        h3 .lang-en.active-lang, h3 .lang-bn.active-lang,
-        h4 .lang-en.active-lang, h4 .lang-bn.active-lang,
-        div .lang-en.active-lang, div .lang-bn.active-lang {
-            display: inline;
-        }
-        div.lang-en.active-lang, div.lang-bn.active-lang {
-            display: block;
-        }
-        .nav-link.active {
-            background-color: #e0f2fe; /* blue-100 */
-            color: #2563eb; /* blue-600 */
-            font-weight: 700;
-        }
-        .interactive-box {
-            border: 2px solid #e5e7eb; /* gray-200 */
-            transition: all 0.3s ease;
-        }
-        .interactive-box.active {
-            border-color: #2563eb; /* blue-600 */
-            background-color: #eff6ff; /* blue-50 */
-            transform: translateY(-4px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
-        .tab-btn.active {
-            border-bottom-color: #2563eb; /* blue-600 */
-            color: #2563eb; /* blue-600 */
-            font-weight: 600;
-        }
-        .tab-btn {
-            border-bottom: 2px solid transparent;
-        }
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-        }
-        /* ### NEW CSS FOR MOBILE SIDEBAR ### */
-        .sidebar-open {
-            transform: translateX(0);
-        }
+                    font-family: 'Inter', 'Noto Sans Bengali', sans-serif;
+                }
+                .chart-container {
+                    position: relative;
+                    width: 100%;
+                    max-width: 600px;
+                    margin-left: auto;
+                    margin-right: auto;
+                    height: 300px;
+                    max-height: 400px;
+                }
+                @media (min-width: 768px) {
+                    .chart-container {
+                        height: 400px;
+                    }
+                }
+                .lang-en, .lang-bn {
+                    display: none;
+                }
+                .lang-en.active-lang, .lang-bn.active-lang {
+                    display: inline-block;
+                }
+                p .lang-en.active-lang, p .lang-bn.active-lang,
+                li .lang-en.active-lang, li .lang-bn.active-lang,
+                span .lang-en.active-lang, span .lang-bn.active-lang,
+                strong .lang-en.active-lang, strong .lang-bn.active-lang,
+                h1 .lang-en.active-lang, h1 .lang-bn.active-lang,
+                h2 .lang-en.active-lang, h2 .lang-bn.active-lang,
+                h3 .lang-en.active-lang, h3 .lang-bn.active-lang,
+                h4 .lang-en.active-lang, h4 .lang-bn.active-lang,
+                div .lang-en.active-lang, div .lang-bn.active-lang {
+                    display: inline;
+                }
+                div.lang-en.active-lang, div.lang-bn.active-lang {
+                    display: block;
+                }
+                .nav-link.active {
+                    background-color: #e0f2fe; /* blue-100 */
+                    color: #2563eb; /* blue-600 */
+                    font-weight: 700;
+                }
+                .interactive-box {
+                    border: 2px solid #e5e7eb; /* gray-200 */
+                    transition: all 0.3s ease;
+                }
+                .interactive-box.active {
+                    border-color: #2563eb; /* blue-600 */
+                    background-color: #eff6ff; /* blue-50 */
+                    transform: translateY(-4px);
+                    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+                }
+                .tab-btn.active {
+                    border-bottom-color: #2563eb; /* blue-600 */
+                    color: #2563eb; /* blue-600 */
+                    font-weight: 600;
+                }
+                .tab-btn {
+                    border-bottom: 2px solid transparent;
+                }
+                .accordion-content {
+                    max-height: 0;
+                    overflow: hidden;
+                    transition: max-height 0.3s ease-out;
+                }
+/* The conflicting .sidebar-open class was removed */
     </style>
 </head>
 <body class="bg-stone-50 text-slate-900">
 
     <div class="flex flex-col md:flex-row min-h-screen">
-        <nav class="w-64 fixed h-full top-0 left-0 bg-white shadow-lg p-4 md:p-6 z-30 md:overflow-y-auto transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
+        <nav class="w-64 fixed h-full top-0 left-0 bg-white shadow-lg p-4 md:p-6 z-30 overflow-y-auto transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
             <button id="menu-close-btn" class="md:hidden absolute top-4 right-4 text-slate-900">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
@@ -1153,309 +1150,311 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            let currentLang = 'bn';
-            let currentSection = 'home';
+       document.addEventListener('DOMContentLoaded', () => {
+    let currentLang = 'bn';
+    let currentSection = 'home';
 
-            const navLinks = document.querySelectorAll('.nav-link');
-            const contentSections = document.querySelectorAll('.content-section');
-            const langToggleButtons = document.querySelectorAll('.lang-toggle-btn');
-            
-            const tabGroups = document.querySelectorAll('[data-tab-group]');
-            const diagramGroups = document.querySelectorAll('[data-diagram-group]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const contentSections = document.querySelectorAll('.content-section');
+    const langToggleButtons = document.querySelectorAll('.lang-toggle-btn');
+    
+    const tabGroups = document.querySelectorAll('[data-tab-group]');
+    const diagramGroups = document.querySelectorAll('[data-diagram-group]');
 
-            // ### NEW: Mobile Menu Elements ###
-            const menuToggleBtn = document.getElementById('menu-toggle-btn');
-            const menuCloseBtn = document.getElementById('menu-close-btn');
-            const sidebar = document.querySelector('nav');
-            const sidebarOverlay = document.getElementById('sidebar-overlay');
-            
-            // --- Data for Interactive Elements ---
-            const mlStageInfo = {
-                'ml-placement': {
-                    bn: 'অবৈধ অর্থ আর্থিক ব্যবস্থায় (যেমন: ব্যাংক) প্রবেশ করানো। উদাহরণ: অনেকগুলো হিসাবে অল্প অল্প করে টাকা জমা দেয়া।',
-                    en: 'Introducing dirty money into the financial system (e.g., bank). Example: Depositing small amounts into many accounts.'
-                },
-                'ml-layering': {
-                    bn: 'জটিল ও বহুস্তর লেনদেনের মাধ্যমে টাকার উৎস আড়াল করা। উদাহরণ: এক হিসাব থেকে অন্য হিসাবে, এক দেশ থেকে অন্য দেশে টাকা পাঠানো।',
-                    en: 'Creating complex layers of transactions to hide the source. Example: Moving money between accounts and countries.'
-                },
-                'ml-integration': {
-                    bn: '"বৈধ" হওয়া অর্থ দিয়ে সম্পদ (বাড়ি, গাড়ি, ব্যবসা) কেনা।',
-                    en: 'The "clean" money is integrated back into the legitimate economy by buying assets (house, car, business).'
-                }
-            };
+    // ### Mobile Menu Elements ###
+    const menuToggleBtn = document.getElementById('menu-toggle-btn');
+    const menuCloseBtn = document.getElementById('menu-close-btn');
+    const sidebar = document.querySelector('nav');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+    
+    // --- Data for Interactive Elements ---
+    const mlStageInfo = {
+        'ml-placement': {
+            bn: 'অবৈধ অর্থ আর্থিক ব্যবস্থায় (যেমন: ব্যাংক) প্রবেশ করানো। উদাহরণ: অনেকগুলো হিসাবে অল্প অল্প করে টাকা জমা দেয়া।',
+            en: 'Introducing dirty money into the financial system (e.g., bank). Example: Depositing small amounts into many accounts.'
+        },
+        'ml-layering': {
+            bn: 'জটিল ও বহুস্তর লেনদেনের মাধ্যমে টাকার উৎস আড়াল করা। উদাহরণ: এক হিসাব থেকে অন্য হিসাবে, এক দেশ থেকে অন্য দেশে টাকা পাঠানো।',
+            en: 'Creating complex layers of transactions to hide the source. Example: Moving money between accounts and countries.'
+        },
+        'ml-integration': {
+            bn: '"বৈধ" হওয়া অর্থ দিয়ে সম্পদ (বাড়ি, গাড়ি, ব্যবসা) কেনা।',
+            en: 'The "clean" money is integrated back into the legitimate economy by buying assets (house, car, business).'
+        }
+    };
 
-            const cycleInfo = {
-                'cycle-crime': { bn: 'অপরাধ (যেমন: দুর্নীতি, মাদক) সংঘটিত হয়।', en: 'A crime is committed (e.g., corruption, drugs).' },
-                'cycle-profit': { bn: 'অপরাধ থেকে অবৈধ মুনাফা অর্জিত হয়।', en: 'Illegal profits are generated from the crime.' },
-                'cycle-laundering': { bn: 'অবৈধ টাকাকে বৈধ দেখানোর জন্য পাচার করা হয়।', en: 'The dirty money is laundered to make it look clean.' },
-                'cycle-clean': { bn: 'অর্থ এখন "বৈধ" বা "সাদা" টাকা।', en: 'The money is now "clean" or "legitimate".' },
-                'cycle-reinvest': { bn: 'সেই "বৈধ" টাকা আরও বড় অপরাধে পুনঃবিনিয়োগ করা হয়।', en: 'The "clean" money is re-invested into more crime.' },
-                'cycle-tf': { bn: 'অথবা, সেই টাকা সন্ত্রাসী কাজে অর্থায়নের জন্য ব্যবহৃত হয়।', en: 'Alternatively, the money is used to finance terrorist acts.' }
-            };
+    const cycleInfo = {
+        'cycle-crime': { bn: 'অপরাধ (যেমন: দুর্নীতি, মাদক) সংঘটিত হয়।', en: 'A crime is committed (e.g., corruption, drugs).' },
+        'cycle-profit': { bn: 'অপরাধ থেকে অবৈধ মুনাফা অর্জিত হয়।', en: 'Illegal profits are generated from the crime.' },
+        'cycle-laundering': { bn: 'অবৈধ টাকাকে বৈধ দেখানোর জন্য পাচার করা হয়।', en: 'The dirty money is laundered to make it look clean.' },
+        'cycle-clean': { bn: 'অর্থ এখন "বৈধ" বা "সাদা" টাকা।', en: 'The money is now "clean" or "legitimate".' },
+        'cycle-reinvest': { bn: 'সেই "বৈধ" টাকা আরও বড় অপরাধে পুনঃবিনিয়োগ করা হয়।', en: 'The "clean" money is re-invested into more crime.' },
+        'cycle-tf': { bn: 'অথবা, সেই টাকা সন্ত্রাসী কাজে অর্থায়নের জন্য ব্যবহৃত হয়।', en: 'Alternatively, the money is used to finance terrorist acts.' }
+    };
 
-            function updateView() {
-                // Language Update
-                document.documentElement.lang = currentLang;
-                document.querySelectorAll('.lang-bn, .lang-en').forEach(el => {
-                    el.classList.remove('active-lang');
-                });
-                document.querySelectorAll(`.lang-${currentLang}`).forEach(el => {
-                    el.classList.add('active-lang');
-                });
-
-                // Language Button State
-                langToggleButtons.forEach(btn => {
-                    if (btn.dataset.lang === currentLang) {
-                        btn.classList.add('bg-blue-600', 'text-white', 'font-semibold');
-                        btn.classList.remove('bg-gray-200', 'text-gray-700');
-                    } else {
-                        btn.classList.remove('bg-blue-600', 'text-white', 'font-semibold');
-                        btn.classList.add('bg-gray-200', 'text-gray-700');
-                    }
-                });
-
-                // Section Update
-                contentSections.forEach(section => {
-                    section.classList.add('hidden');
-                });
-                const activeSection = document.getElementById(currentSection);
-                if (activeSection) {
-                    activeSection.classList.remove('hidden');
-                } else {
-                    // Fallback to home if section not found
-                    document.getElementById('home').classList.remove('hidden');
-                    currentSection = 'home';
-                }
-
-
-                // Active Nav Link
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.dataset.target === currentSection) {
-                        link.classList.add('active');
-                    }
-                });
-
-                // If switching to stats, re-render chart
-                if (currentSection === 'stats') {
-                    renderStatsChart();
-                }
-            }
-
-            // --- Setup Functions ---
-
-            // ### NEW: Mobile Menu Function ###
-            function setupMobileMenu() {
-                if (menuToggleBtn) {
-                    menuToggleBtn.addEventListener('click', () => {
-                        sidebar.classList.add('sidebar-open');
-                        sidebarOverlay.classList.remove('hidden');
-                    });
-                }
-
-                if (menuCloseBtn) {
-                    menuCloseBtn.addEventListener('click', () => {
-                        sidebar.classList.remove('sidebar-open');
-                        sidebarOverlay.classList.add('hidden');
-                    });
-                }
-
-                if (sidebarOverlay) {
-                    sidebarOverlay.addEventListener('click', () => {
-                        sidebar.classList.remove('sidebar-open');
-                        sidebarOverlay.classList.add('hidden');
-                    });
-                }
-
-                // Also close menu when a nav link is clicked on mobile
-                navLinks.forEach(link => {
-                    link.addEventListener('click', () => {
-                        if (window.innerWidth < 768) { // md breakpoint
-                            sidebar.classList.remove('sidebar-open');
-                            sidebarOverlay.classList.add('hidden');
-                        }
-                    });
-                });
-            }
-
-            function setupNav() {
-                navLinks.forEach(link => {
-                    link.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        currentSection = link.dataset.target;
-                        updateView();
-                        window.scrollTo(0, 0); // Scroll to top of content
-                    });
-                });
-            }
-
-            function setupLangToggle() {
-                langToggleButtons.forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        currentLang = btn.dataset.lang;
-                        updateView();
-                    });
-                });
-            }
-
-            function setupTabs() {
-                tabGroups.forEach(group => {
-                    const buttons = group.querySelectorAll('.tab-btn');
-                    const contents = group.closest('section, .bg-white').querySelectorAll('[data-tab-content]');
-                    
-                    buttons.forEach(button => {
-                        button.addEventListener('click', () => {
-                            buttons.forEach(btn => btn.classList.remove('active'));
-                            button.classList.add('active');
-                            
-                            const targetTab = button.dataset.tab;
-                            contents.forEach(content => {
-                                if (content.dataset.tabContent === targetTab) {
-                                    content.classList.remove('hidden');
-                                } else {
-                                    content.classList.add('hidden');
-                                }
-                            });
-                        });
-                    });
-                    // Activate the first tab by default
-                    if(buttons.length > 0) buttons[0].click();
-                });
-            }
-
-            function setupDiagrams() {
-                diagramGroups.forEach(group => {
-                    const boxes = group.querySelectorAll('.interactive-box');
-                    const infoDisplayId = group.dataset.diagramGroup === 'ml-stages' ? 'ml-stage-info' : 'cycle-info';
-                    const infoDisplay = document.getElementById(infoDisplayId);
-                    
-                    boxes.forEach(box => {
-                        box.addEventListener('click', () => {
-                            boxes.forEach(b => b.classList.remove('active'));
-                            box.classList.add('active');
-                            
-                            const infoKey = box.dataset.info;
-                            const info = group.dataset.diagramGroup === 'ml-stages' ? mlStageInfo[infoKey] : cycleInfo[infoKey];
-                            
-                            if (info && infoDisplay) {
-                                infoDisplay.innerHTML = `
-                                    <p class="lang-bn active-lang">${info.bn}</p>
-                                    <p class="lang-en">${info.en}</p>
-                                `;
-                                // Re-apply language visibility
-                                infoDisplay.querySelectorAll('.lang-bn, .lang-en').forEach(el => el.classList.remove('active-lang'));
-                                infoDisplay.querySelectorAll(`.lang-${currentLang}`).forEach(el => {
-                                    el.classList.add('active-lang');
-                                });
-                            }
-                        });
-                    });
-                });
-            }
-
-            function setupAccordion() {
-                const toggles = document.querySelectorAll('.accordion-toggle'); // Select all toggles
-                toggles.forEach(toggle => {
-                    toggle.addEventListener('click', () => {
-                        const content = toggle.nextElementSibling;
-                        const icon = toggle.querySelector('.accordion-icon');
-                        
-                        // Check if content is open (has a maxHeight)
-                        if (content.style.maxHeight) {
-                            content.style.maxHeight = null; // Close it
-                            icon.textContent = '+';
-                        } else {
-                            // Close all other accordions in the same group (optional, but good practice)
-                            const parentContainer = toggle.closest('.space-y-4'); // Find the accordion group
-                            if (parentContainer) {
-                                parentContainer.querySelectorAll('.accordion-toggle').forEach(otherToggle => {
-                                    if(otherToggle !== toggle) { // Don't close itself
-                                        otherToggle.nextElementSibling.style.maxHeight = null;
-                                        otherToggle.querySelector('.accordion-icon').textContent = '+';
-                                    }
-                                });
-                            }
-                            
-                            // Open the clicked one
-                            content.style.maxHeight = content.scrollHeight + "px";
-                            icon.textContent = '−';
-                        }
-                    });
-                });
-            }
-
-            let statsChartInstance = null;
-            function renderStatsChart() {
-                const ctx = document.getElementById('statsChart').getContext('2d');
-                
-                // Data from slide 8: 8500+ in FY21-22, 62% increase.
-                // Implies FY20-21 was ~8500 / 1.62 = ~5247
-                const fy2021 = 5247;
-                const fy2022 = 8571; // Using a number from 8500+
-
-                const data = {
-                    labels: ['FY 2020-21', 'FY 2021-22'],
-                    datasets: [{
-                        label: 'Number of STRs',
-                        data: [fy2021, fy2022],
-                        backgroundColor: [
-                            'rgba(59, 130, 246, 0.6)', // blue-500
-                            'rgba(249, 115, 22, 0.6)'  // orange-500
-                        ],
-                        borderColor: [
-                            'rgba(59, 130, 246, 1)',
-                            'rgba(249, 115, 22, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                };
-                
-                if (statsChartInstance) {
-                    statsChartInstance.destroy();
-                }
-
-                statsChartInstance = new Chart(ctx, {
-                    type: 'bar',
-                    data: data,
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                title: {
-                                    display: true,
-                                    text: 'Number of Reports'
-                                }
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        return ` STRs: ${context.parsed.y}`;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-
-            // --- Initialize App ---
-            setupMobileMenu(); // ### Call new function
-            setupNav();
-            setupLangToggle();
-            setupTabs();
-            setupDiagrams();
-            setupAccordion();
-            updateView(); // Set initial state
+    function updateView() {
+        // Language Update
+        document.documentElement.lang = currentLang;
+        document.querySelectorAll('.lang-bn, .lang-en').forEach(el => {
+            el.classList.remove('active-lang');
         });
+        document.querySelectorAll(`.lang-${currentLang}`).forEach(el => {
+            el.classList.add('active-lang');
+        });
+
+        // Language Button State
+        langToggleButtons.forEach(btn => {
+            if (btn.dataset.lang === currentLang) {
+                btn.classList.add('bg-blue-600', 'text-white', 'font-semibold');
+                btn.classList.remove('bg-gray-200', 'text-gray-700');
+            } else {
+                btn.classList.remove('bg-blue-600', 'text-white', 'font-semibold');
+                btn.classList.add('bg-gray-200', 'text-gray-700');
+            }
+        });
+
+        // Section Update
+        contentSections.forEach(section => {
+            section.classList.add('hidden');
+        });
+        const activeSection = document.getElementById(currentSection);
+        if (activeSection) {
+            activeSection.classList.remove('hidden');
+        } else {
+            // Fallback to home if section not found
+            document.getElementById('home').classList.remove('hidden');
+            currentSection = 'home';
+        }
+
+
+        // Active Nav Link
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.dataset.target === currentSection) {
+                link.classList.add('active');
+            }
+        });
+
+        // If switching to stats, re-render chart
+        if (currentSection === 'stats') {
+            renderStatsChart();
+        }
+    }
+
+    // --- Setup Functions ---
+
+    // ### Mobile Menu Function (Corrected) ###
+    function setupMobileMenu() {
+        if (menuToggleBtn) {
+            menuToggleBtn.addEventListener('click', () => {
+                // Use Tailwind classes to show
+                sidebar.classList.remove('-translate-x-full');
+                sidebar.classList.add('translate-x-0');
+                sidebarOverlay.classList.remove('hidden');
+            });
+        }
+
+        function closeMenu() {
+            // Use Tailwind classes to hide
+            sidebar.classList.remove('translate-x-0');
+            sidebar.classList.add('-translate-x-full');
+            sidebarOverlay.classList.add('hidden');
+        }
+
+        if (menuCloseBtn) {
+            menuCloseBtn.addEventListener('click', closeMenu);
+        }
+
+        if (sidebarOverlay) {
+            sidebarOverlay.addEventListener('click', closeMenu);
+        }
+
+        // Also close menu when a nav link is clicked on mobile
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth < 768) { // md breakpoint
+                    closeMenu();
+                }
+            });
+        });
+    }
+
+    function setupNav() {
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                currentSection = link.dataset.target;
+                updateView();
+                window.scrollTo(0, 0); // Scroll to top of content
+            });
+        });
+    }
+
+    function setupLangToggle() {
+        langToggleButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                currentLang = btn.dataset.lang;
+                updateView();
+            });
+        });
+    }
+
+    function setupTabs() {
+        tabGroups.forEach(group => {
+            const buttons = group.querySelectorAll('.tab-btn');
+            const contents = group.closest('section, .bg-white').querySelectorAll('[data-tab-content]');
+            
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    buttons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    const targetTab = button.dataset.tab;
+                    contents.forEach(content => {
+                        if (content.dataset.tabContent === targetTab) {
+                            content.classList.remove('hidden');
+                        } else {
+                            content.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+            // Activate the first tab by default
+            if(buttons.length > 0) buttons[0].click();
+        });
+    }
+
+    function setupDiagrams() {
+        diagramGroups.forEach(group => {
+            const boxes = group.querySelectorAll('.interactive-box');
+            const infoDisplayId = group.dataset.diagramGroup === 'ml-stages' ? 'ml-stage-info' : 'cycle-info';
+            const infoDisplay = document.getElementById(infoDisplayId);
+            
+            boxes.forEach(box => {
+                box.addEventListener('click', () => {
+                    boxes.forEach(b => b.classList.remove('active'));
+                    box.classList.add('active');
+                    
+                    const infoKey = box.dataset.info;
+                    const info = group.dataset.diagramGroup === 'ml-stages' ? mlStageInfo[infoKey] : cycleInfo[infoKey];
+                    
+                    if (info && infoDisplay) {
+                        infoDisplay.innerHTML = `
+                            <p class="lang-bn active-lang">${info.bn}</p>
+                            <p class="lang-en">${info.en}</p>
+                        `;
+                        // Re-apply language visibility
+                        infoDisplay.querySelectorAll('.lang-bn, .lang-en').forEach(el => el.classList.remove('active-lang'));
+                        infoDisplay.querySelectorAll(`.lang-${currentLang}`).forEach(el => {
+                            el.classList.add('active-lang');
+                        });
+                    }
+                });
+            });
+        });
+    }
+
+    function setupAccordion() {
+        const toggles = document.querySelectorAll('.accordion-toggle'); // Select all toggles
+        toggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const content = toggle.nextElementSibling;
+                const icon = toggle.querySelector('.accordion-icon');
+                
+                // Check if content is open (has a maxHeight)
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null; // Close it
+                    icon.textContent = '+';
+                } else {
+                    // Close all other accordions in the same group (optional, but good practice)
+                    const parentContainer = toggle.closest('.space-y-4'); // Find the accordion group
+                    if (parentContainer) {
+                        parentContainer.querySelectorAll('.accordion-toggle').forEach(otherToggle => {
+                            if(otherToggle !== toggle) { // Don't close itself
+                                otherToggle.nextElementSibling.style.maxHeight = null;
+                                otherToggle.querySelector('.accordion-icon').textContent = '+';
+                            }
+                        });
+                    }
+                    
+                    // Open the clicked one
+                    content.style.maxHeight = content.scrollHeight + "px";
+                    icon.textContent = '−';
+                }
+            });
+        });
+    }
+
+    let statsChartInstance = null;
+    function renderStatsChart() {
+        const ctx = document.getElementById('statsChart').getContext('2d');
+        
+        // Data from slide 8: 8500+ in FY21-22, 62% increase.
+        // Implies FY20-21 was ~8500 / 1.62 = ~5247
+        const fy2021 = 5247;
+        const fy2022 = 8571; // Using a number from 8500+
+
+        const data = {
+            labels: ['FY 2020-21', 'FY 2021-22'],
+            datasets: [{
+                label: 'Number of STRs',
+                data: [fy2021, fy2022],
+                backgroundColor: [
+                    'rgba(59, 130, 246, 0.6)', // blue-500
+                    'rgba(249, 115, 22, 0.6)'  // orange-500
+                ],
+                borderColor: [
+                    'rgba(59, 130, 246, 1)',
+                    'rgba(249, 115, 22, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+        
+        if (statsChartInstance) {
+            statsChartInstance.destroy();
+        }
+
+        statsChartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Number of Reports'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return ` STRs: ${context.parsed.y}`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // --- Initialize App ---
+    setupMobileMenu(); 
+    setupNav();
+    setupLangToggle();
+    setupTabs();
+    setupDiagrams();
+    setupAccordion();
+    updateView(); // Set initial state
+});
     </script>
 </body>
 </html>
