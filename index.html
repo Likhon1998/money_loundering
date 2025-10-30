@@ -1,15 +1,4 @@
 <!DOCTYPE html>
-<!-- Chosen Palette: Calm Harmony (Warm Neutral: stone-50, Text: slate-900, Accent: blue-600, Highlight: orange-500) -->
-<!-- Application Structure Plan: A sidebar-navigated SPA. This non-linear, thematic structure is chosen over the original linear presentation to allow users (likely bank/FI staff) to quickly access the specific information they need, such as 'Responsibilities' or 'Statistics', without clicking through slides. Interaction is centered on a global language toggle (EN/BN), section-based content swapping, and interactive HTML diagrams for processes (ML Stages, Vicious Cycle), which are more engaging and explorable than static images. This design prioritizes user-driven exploration and quick reference. -->
-<!-- Visualization & Content Choices: 
-    - Info: ML/TF Definitions (Slides 3, 5, 6) -> Goal: Inform/Compare -> Presentation: Tabbed content in 'Core Concepts' section -> Interaction: Click tabs (ML/TF/Comparison) to swap text. Justify: Groups foundational definitions for easy comparison. Method: HTML/JS.
-    - Info: ML Stages (Slide 4) -> Goal: Organize/Explain Process -> Presentation: HTML/Tailwind flex-box diagram -> Interaction: JS onClick on each box to highlight it and display detailed text below. Justify: More engaging than a static list. Method: HTML/JS.
-    - Info: Statistics (Slide 8) -> Goal: Compare -> Presentation: 1) Large text callouts for Global GDP. 2) Chart.js Bar Chart for BFIU STRs (FY 20-21 vs 21-22) to show the 62% increase. -> Interaction: Chart.js tooltips. Justify: Visualizes the key data point (the *increase* in reporting) effectively. Library: Chart.js (Canvas).
-    - Info: Vicious Cycle (Slide 9) -> Goal: Organize/Explain Process -> Presentation: HTML/Tailwind diagram -> Interaction: JS onClick on stages to show details. Justify: Interactive flow diagram. Method: HTML/JS.
-    - Info: Laws & BFIU (Slides 10-14) -> Goal: Inform/Organize -> Presentation: Accordion component -> Interaction: Click to expand/collapse accordion item. Justify: Condenses text-heavy info neatly. Method: HTML/JS.
-    - Info: Responsibilities (Slides 15-20) -> Goal: Inform/Task-Oriented -> Presentation: Master section with sub-tabs: 'Who (ROs)', 'CDD/EDD', 'Reporting (STR)', 'Red Flags', 'Penalties'. -> Interaction: Click tabs to swap content. Justify: Groups all actionable compliance info into a "one-stop-shop". Method: HTML/JS.
--->
-<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
@@ -44,7 +33,15 @@
         .lang-en.active-lang, .lang-bn.active-lang {
             display: inline-block;
         }
-        p .lang-en.active-lang, p .lang-bn.active-lang {
+        p .lang-en.active-lang, p .lang-bn.active-lang,
+        li .lang-en.active-lang, li .lang-bn.active-lang,
+        span .lang-en.active-lang, span .lang-bn.active-lang,
+        strong .lang-en.active-lang, strong .lang-bn.active-lang,
+        h1 .lang-en.active-lang, h1 .lang-bn.active-lang,
+        h2 .lang-en.active-lang, h2 .lang-bn.active-lang,
+        h3 .lang-en.active-lang, h3 .lang-bn.active-lang,
+        h4 .lang-en.active-lang, h4 .lang-bn.active-lang,
+        div .lang-en.active-lang, div .lang-bn.active-lang {
             display: inline;
         }
         div.lang-en.active-lang, div.lang-bn.active-lang {
@@ -83,8 +80,7 @@
 <body class="bg-stone-50 text-slate-900">
 
     <div class="flex flex-col md:flex-row min-h-screen">
-        <!-- Sidebar Navigation -->
-        <nav class="w-full md:w-64 md:fixed md:h-full bg-white shadow-lg p-4 md:p-6 z-10">
+        <nav class="w-full md:w-64 md:fixed md:h-full bg-white shadow-lg p-4 md:p-6 z-10 md:overflow-y-auto">
             <div class="flex justify-center mb-4">
                 <img src="assets/logo2.png" alt="DSK Logo" class="h-16 w-auto" onerror="this.alt='DSK Logo'; this.src='https://placehold.co/150x60/0033a0/ffffff?text=DSK+Logo&font=sans';">
             </div>
@@ -129,6 +125,10 @@
                     <span class="lang-bn active-lang">আপনার করণীয়</span>
                     <span class="lang-en">Your Responsibilities</span>
                 </a></li>
+                <li><a href="#" class="nav-link block py-2 px-3 rounded-md hover:bg-gray-100" data-target="ngo-focus">
+                    <span class="lang-bn active-lang">এনজিও/এনপিও ফোকাস</span>
+                    <span class="lang-en">NGO/NPO Focus</span>
+                </a></li>
                 <li><a href="#" class="nav-link block py-2 px-3 rounded-md hover:bg-gray-100" data-target="conclusion">
                     <span class="lang-bn active-lang">উপসংহার</span>
                     <span class="lang-en">Conclusion</span>
@@ -136,10 +136,8 @@
             </ul>
         </nav>
 
-        <!-- Main Content -->
         <main class="w-full md:ml-64 p-6 md:p-10">
             
-            <!-- Home Section -->
             <section id="home" class="content-section">
                 <h1 class="text-3xl md:text-4xl font-bold mb-4">
                     <span class="lang-bn active-lang">অর্থ পাচার ও সন্ত্রাসে অর্থায়ন প্রতিরোধ</span>
@@ -185,7 +183,6 @@
                 </div>
             </section>
 
-            <!-- Core Concepts Section -->
             <section id="concepts" class="content-section hidden">
                 <h1 class="text-3xl font-bold mb-4">
                     <span class="lang-bn active-lang">মূল ধারণা</span>
@@ -212,7 +209,6 @@
                 </div>
 
                 <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                    <!-- ML Content -->
                     <div data-tab-content="ml" class="tab-content">
                         <h2 class="text-2xl font-bold mb-3">
                             <span class="lang-bn active-lang">অর্থ পাচার কী?</span>
@@ -233,7 +229,6 @@
                             </p>
                         </div>
                     </div>
-                    <!-- TF Content -->
                     <div data-tab-content="tf" class="tab-content hidden">
                         <h2 class="text-2xl font-bold mb-3">
                             <span class="lang-bn active-lang">সন্ত্রাসে অর্থায়ন কী?</span>
@@ -254,7 +249,6 @@
                             </p>
                         </div>
                     </div>
-                    <!-- Comparison Content -->
                     <div data-tab-content="comparison" class="tab-content hidden">
                         <h2 class="text-2xl font-bold mb-3">
                             <span class="lang-bn active-lang">মূল পার্থক্য</span>
@@ -292,7 +286,6 @@
                 </div>
             </section>
 
-            <!-- Process & Impact Section -->
             <section id="process" class="content-section hidden">
                 <h1 class="text-3xl font-bold mb-4">
                     <span class="lang-bn active-lang">প্রক্রিয়া ও প্রভাব</span>
@@ -303,7 +296,6 @@
                     <span class="lang-en">Learn about the stages of ML, the vicious cycle of crime, and its harmful impact on society.</span>
                 </p>
                 
-                <!-- ML Stages -->
                 <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 mb-6">
                     <h2 class="text-2xl font-bold mb-4">
                         <span class="lang-bn active-lang">অর্থ পাচারের ৩টি পর্যায় (ক্লিক করুন)</span>
@@ -339,7 +331,6 @@
                     </div>
                 </div>
 
-                <!-- Vicious Cycle -->
                 <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 mb-6">
                     <h2 class="text-2xl font-bold mb-4">
                         <span class="lang-bn active-lang">অপরাধের দুষ্ট চক্র</span>
@@ -378,7 +369,6 @@
                     </div>
                 </div>
 
-                <!-- Impact -->
                 <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
                     <h2 class="text-2xl font-bold mb-4">
                         <span class="lang-bn active-lang">এটি কেন মারাত্মক সমস্যা?</span>
@@ -409,7 +399,6 @@
                 </div>
             </section>
 
-            <!-- Stats Section -->
             <section id="stats" class="content-section hidden">
                 <h1 class="text-3xl font-bold mb-4">
                     <span class="lang-bn active-lang">তথ্য ও পরিসংখ্যান</span>
@@ -544,7 +533,6 @@
                 </div>
             </section>
 
-            <!-- Legal Section -->
             <section id="legal" class="content-section hidden">
                 <h1 class="text-3xl font-bold mb-4">
                     <span class="lang-bn active-lang">আইনী কাঠামো</span>
@@ -556,7 +544,6 @@
                 </p>
 
                 <div class="space-y-4" id="accordion-container">
-                    <!-- Accordion Item 1 -->
                     <div class="bg-white rounded-lg shadow-md border border-gray-200">
                         <button class="accordion-toggle flex justify-between items-center w-full p-5 font-semibold text-left">
                             <span class="text-lg">
@@ -586,7 +573,6 @@
                             </ul>
                         </div>
                     </div>
-                    <!-- Accordion Item 2 -->
                     <div class="bg-white rounded-lg shadow-md border border-gray-200">
                         <button class="accordion-toggle flex justify-between items-center w-full p-5 font-semibold text-left">
                             <span class="text-lg">
@@ -616,7 +602,6 @@
                             </ul>
                         </div>
                     </div>
-                    <!-- Accordion Item 3 -->
                     <div class="bg-white rounded-lg shadow-md border border-gray-200">
                         <button class="accordion-toggle flex justify-between items-center w-full p-5 font-semibold text-left">
                             <span class="text-lg">
@@ -657,7 +642,6 @@
                 </div>
             </section>
 
-            <!-- Responsibilities Section -->
             <section id="responsibilities" class="content-section hidden">
                 <h1 class="text-3xl font-bold mb-4">
                     <span class="lang-bn active-lang">আপনার করণীয়</span>
@@ -692,7 +676,6 @@
                 </div>
 
                 <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                    <!-- ROs Content -->
                     <div data-tab-content="ros" class="tab-content">
                         <h2 class="text-2xl font-bold mb-3">
                             <span class="lang-bn active-lang">রিপোর্টিং সংস্থা (Reporting Organizations)</span>
@@ -713,7 +696,6 @@
                             <li><span class="lang-bn active-lang">এনজিও / অলাভজনক প্রতিষ্ঠান</span><span class="lang-en">NGOs/NPOs</span></li>
                         </ul>
                     </div>
-                    <!-- CDD Content -->
                     <div data-tab-content="cdd" class="tab-content hidden">
                         <h2 class="text-2xl font-bold mb-3">
                             <span class="lang-bn active-lang">গ্রাহক পরিচিতি (CDD/KYC)</span>
@@ -748,7 +730,6 @@
                             </ul>
                         </div>
                     </div>
-                    <!-- STR Content -->
                     <div data-tab-content="str" class="tab-content hidden">
                         <h2 class="text-2xl font-bold mb-3">
                             <span class="lang-bn active-lang">সন্দেহজনক লেনদেন রিপোর্ট (STR)</span>
@@ -778,7 +759,6 @@
                             <span class="lang-en">Banks must submit monthly CTRs to BFIU for all cash transactions above a certain threshold (currently 1 million BDT or equivalent).</span>
                         </p>
                     </div>
-                    <!-- Red Flags Content -->
                     <div data-tab-content="redflags" class="tab-content hidden">
                         <h2 class="text-2xl font-bold mb-3">
                             <span class="lang-bn active-lang">কিছু "সতর্ক সংকেত"</span>
@@ -819,7 +799,6 @@
                             </li>
                         </ul>
                     </div>
-                    <!-- Penalties Content -->
                     <div data-tab-content="penalties" class="tab-content hidden">
                         <h2 class="text-2xl font-bold mb-3">
                             <span class="lang-bn active-lang">আইন না মানলে শাস্তি</span>
@@ -852,7 +831,287 @@
                 </div>
             </section>
             
-            <!-- Conclusion Section -->
+            <section id="ngo-focus" class="content-section hidden">
+                <h1 class="text-3xl font-bold mb-4">
+                    <span class="lang-bn active-lang">এনজিও/এনপিও খাতের জন্য বিশেষ নির্দেশিকা</span>
+                    <span class="lang-en">Special Focus: NGO/NPO Sector</span>
+                </h1>
+                <p class="text-lg text-gray-700 mb-6">
+                    <span class="lang-bn active-lang">এনজিও/এনপিও খাতের নির্দিষ্ট ঝুঁকি, প্রভাব এবং প্রতিরোধমূলক ব্যবস্থা সম্পর্কে জানুন। মানিলন্ডারিং ও সন্ত্রাসে অর্থায়ন এনজিও ও মাইক্রোক্রেডিট কার্যক্রমের জন্য একটি গুরুতর ঝুঁকি।</span>
+                    <span class="lang-en">Learn about the specific risks, impacts, and preventive measures for the NGO/NPO sector. Money laundering and terrorist financing are serious risks for NGOs and microcredit programs.</span>
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                        <h2 class="text-2xl font-bold mb-4">
+                            <span class="lang-bn active-lang">মানি লন্ডারিং ও সন্ত্রাসে অর্থায়নের প্রভাব (Impact)</span>
+                            <span class="lang-en">Impact of Money Laundering & Terrorist Financing</span>
+                        </h2>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><span class="lang-bn active-lang"><strong>সুনামের ক্ষতি:</strong> এনজিওর মাধ্যমে অভিযোগ উঠলে বিশ্বাসযোগ্যতা ক্ষতিগ্রস্ত হয়।</span><span class="lang-en"><strong>Reputational Damage:</strong> Allegations through an NGO seriously damage credibility.</span></li>
+                            <li><span class="lang-bn active-lang"><strong>আইনি জটিলতা ও লাইসেন্স বাতিলের ঝুঁকি:</strong> নিয়ন্ত্রক সংস্থা (যেমন বাংলাদেশ ব্যাংক, এনজিও ব্যুরো) আইনি পদক্ষেপ বা নিবন্ধন বাতিল করতে পারে।</span><span class="lang-en"><strong>Legal Complications & License Risk:</strong> Regulators (like Bangladesh Bank, NGO Bureau) can take legal action or cancel registration.</span></li>
+                            <li><span class="lang-bn active-lang"><strong>বিদেশি অনুদান বন্ধ:</strong> আন্তর্জাতিক দাতারা তহবিল স্থগিত করতে পারে, যা মাইক্রোক্রেডিট কার্যক্রম ব্যাহত করে।</span><span class="lang-en"><strong>Foreign Funding Freeze:</strong> International donors may suspend funds, hampering microcredit activities.</span></li>
+                            <li><span class="lang-bn active-lang"><strong>আর্থিক ক্ষতি ও প্রশাসনিক সমস্যা:</strong> আর্থিক জালিয়াতি, স্বচ্ছতার অভাব এবং অডিটে সমস্যা দেখা দেয়।</span><span class="lang-en"><strong>Financial Loss & Administrative Problems:</strong> Financial fraud, lack of transparency, and audit issues arise.</span></li>
+                            <li><span class="lang-bn active-lang"><strong>গ্রাহক ও মাঠপর্যায়ের আস্থা হ্রাস:</strong> ঋণগ্রহীতা ও জনগণ আস্থা হারাতে পারে, যা ঋণ আদায়ে নেতিবাচক প্রভাব ফেলে।</span><span class="lang-en"><strong>Loss of Client & Field-level Trust:</strong> Borrowers and the public may lose trust, negatively impacting loan recovery.</span></li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                        <h2 class="text-2xl font-bold mb-4">
+                            <span class="lang-bn active-lang">প্রতিরোধ বা সুরক্ষার উপায় (Prevention)</span>
+                            <span class="lang-en">Prevention & Protection Measures</span>
+                        </h2>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><span class="lang-bn active-lang"><strong>KYC (Know Your Customer) নীতি:</strong> প্রতিটি ঋণগ্রহীতা ও দাতার পরিচয় (NID, ছবি, ঠিকানা, পেশা) যাচাই করা।</span><span class="lang-en"><strong>KYC (Know Your Customer) Policy:</strong> Verify the identity (NID, photo, address, profession) of every borrower and donor.</span></li>
+                            <li><span class="lang-bn active-lang"><strong>AML/CFT নীতি বাস্তবায়ন:</strong> নীতিমালা অনুযায়ী নিয়মিত মনিটরিং করা।</span><span class="lang-en"><strong>AML/CFT Policy Implementation:</strong> Regular monitoring as per policy.</span></li>
+                            <li><span class="lang-bn active-lang"><strong>সন্দেহজনক লেনদেন রিপোর্ট (STR/SAR) দাখিল:</strong> সন্দেহজনক লেনদেন BFIU-কে রিপোর্ট করা।</span><span class="lang-en"><strong>Submit STR/SAR:</strong> Report suspicious transactions to BFIU.</span></li>
+                            <li><span class="lang-bn active-lang"><strong>কর্মীদের প্রশিক্ষণ:</strong> মাঠকর্মী ও স্টাফদের AML/CFT বিষয়ে প্রশিক্ষণ প্রদান।</span><span class="lang-en"><strong>Staff Training:</strong> Provide AML/CFT training to field staff and office staff.</span></li>
+                            <li><span class="lang-bn active-lang"><strong>নিয়মিত অডিট ও তদারকি:</strong> অভ্যন্তরীণ ও বহিরাগত অডিট করা।</span><span class="lang-en"><strong>Regular Audit & Supervision:</strong> Conduct internal and external audits.</span></li>
+                            <li><span class="lang-bn active-lang"><strong>দাতাদের উৎস যাচাই:</strong> অনুদানের উৎস যাচাই করা, বিশেষ করে বিদেশি উৎসের ক্ষেত্রে।</span><span class="lang-en"><strong>Donor Source Verification:</strong> Verify the source of donations, especially foreign sources.</span></li>
+                            <li><span class="lang-bn active-lang"><strong>ডিজিটাল ট্রান্সেকশন ও রেকর্ড সংরক্ষণ:</strong> নগদ কমিয়ে ডিজিটাল মাধ্যম ব্যবহার ও সব তথ্য নথিভুক্ত রাখা।</span><span class="lang-en"><strong>Digital Transaction & Record Keeping:</strong> Reduce cash, use digital mediums, and document all financial info.</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                        <h2 class="text-2xl font-bold mb-4">
+                            <span class="lang-bn active-lang">হুন্ডি ও এনজিও</span>
+                            <span class="lang-en">Hundi & NGOs</span>
+                        </h2>
+                        <h3 class="text-lg font-semibold"><span class="lang-bn active-lang">হুন্ডি কী?</span><span class="lang-en">What is Hundi?</span></h3>
+                        <p class="mb-3 text-gray-700"><span class="lang-bn active-lang">হুন্ডি একটি অবৈধ বা অননুমোদিত অর্থ লেনদেনের পদ্ধতি, যা ব্যাংকিং ব্যবস্থার বাইরে পরিচালিত হয়। এটি রাষ্ট্রীয় রিজার্ভে যোগ হয় না এবং প্রায়ই কর ফাঁকি বা অর্থ পাচারের জন্য ব্যবহৃত হয়।</span><span class="lang-en">Hundi is an illegal or unauthorized money transfer method that operates outside the banking system. It does not add to state reserves and is often used for tax evasion or money laundering.</span></p>
+                        
+                        <h3 class="text-lg font-semibold"><span class="lang-bn active-lang">এনজিওর উপর প্রভাব</span><span class="lang-en">Impact on NGOs</span></h3>
+                        <ul class="list-disc list-inside space-y-1 text-gray-700">
+                            <li><span class="lang-bn active-lang"><strong>স্বচ্ছতার অভাব:</strong> লেনদেনের কোনো সরকারি নথিপত্র থাকে না।</span><span class="lang-en"><strong>Lack of Transparency:</strong> No official documentation of transactions.</span></li>
+                            <li><span class="lang-bn active-lang"><strong>আইনগত ঝুঁকি:</strong> AML/CFT আইন লঙ্ঘনের সম্ভাবনা থাকে।</span><span class="lang-en"><strong>Legal Risk:</strong> Potential violation of AML/CFT laws.</span></li>
+                            <li><span class="lang-bn active-lang"><strong>অডিট জটিলতা:</strong> অডিটে ব্যাখ্যা করা কঠিন হয়।</span><span class="lang-en"><strong>Audit Complications:</strong> Difficult to explain during audits.</span></li>
+                            <li><span class="lang-bn active-lang"><strong>বিশ্বাসযোগ্যতা হ্রাস:</strong> দাতা সংস্থা বা সরকার আস্থা হারাতে পারে।</span><span class="lang-en"><strong>Reduced Credibility:</strong> Loss of trust from donors or the government.</span></li>
+                            <li><span class="lang-bn active-lang"><strong>ব্যাংকিং নীতিমালা লঙ্ঘন:</strong> বিদেশি অনুদান অবশ্যই ব্যাংকিং চ্যানেলের মাধ্যমে হতে হবে।</span><span class="lang-en"><strong>Banking Policy Violation:</strong> Foreign donations must come through banking channels.</span></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                        <h2 class="text-2xl font-bold mb-4">
+                            <span class="lang-bn active-lang">CAMLCO কী?</span>
+                            <span class="lang-en">What is a CAMLCO?</span>
+                        </h2>
+                        <p class="mb-3 text-gray-700"><span class="lang-bn active-lang"><strong>CAMLCO</strong> = Chief Anti-Money Laundering Compliance Officer। ইনি একটি ব্যাংক বা আর্থিক প্রতিষ্ঠানের শীর্ষ কর্মকর্তা, যিনি সকল AML/CFT নীতি, পদ্ধতি, ও নিয়ন্ত্রণ ব্যবস্থা বাস্তবায়নের দায়িত্বে থাকেন। তিনি আইন, বিধিমালা ও নিয়ন্ত্রক নির্দেশনা মেনে চলা নিশ্চিত করেন। (Agrani Bank)</span><span class="lang-en"><strong>CAMLCO</strong> = Chief Anti-Money Laundering Compliance Officer. This is the senior officer in a bank or financial institution responsible for implementing all AML/CFT policies, procedures, and control systems. They ensure compliance with laws, rules, and regulatory guidelines. (Agrani Bank)</span></p>
+                        <h3 class="text-lg font-semibold"><span class="lang-bn active-lang">মূল দায়িত্ব</span><span class="lang-en">Key Responsibilities</span></h3>
+                        <ul class="list-disc list-inside space-y-1 text-gray-700">
+                            <li><span class="lang-bn active-lang">AML/CFT নীতি, পদ্ধতি তৈরি ও হালনাগাদ করা।</span><span class="lang-en">Creating and updating AML/CFT policies and procedures.</span></li>
+                            <li><span class="lang-bn active-lang">KYC, ব্যবসায়িক লেনদেন পর্যবেক্ষণ, ও রিপোর্টিং ব্যবস্থা চালু রাখা।</span><span class="lang-en">Maintaining KYC, business transaction monitoring, and reporting systems.</span></li>
+                            <li><span class="lang-bn active-lang">সংশ্লিষ্ট আইন পরিবর্তন হলে তা বাস্তবায়ন ও কর্মীদের প্রশিক্ষণ দেওয়া। (BB)</span><span class="lang-en">Implementing changes to relevant laws and training staff. (BB)</span></li>
+                            <li><span class="lang-bn active-lang">শাখা ও বিভাগগুলোর AML কার্যক্রম মূল্যায়ন ও তদারকি করা। (bdbl.portal.gov.bd)</span><span class="lang-en">Evaluating and supervising the AML activities of branches and departments. (bdbl.portal.gov.bd)</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                        <h2 class="text-2xl font-bold mb-4">
+                            <span class="lang-bn active-lang">FATF ও এনজিও</span>
+                            <span class="lang-en">FATF & NGOs</span>
+                        </h2>
+                        <h3 class="text-lg font-semibold"><span class="lang-bn active-lang">FATF কী?</span><span class="lang-en">What is FATF?</span></h3>
+                        <p class="mb-3 text-gray-700"><span class="lang-bn active-lang"><strong>Financial Action Task Force (FATF)</strong> হলো একটি আন্তর্জাতিক সংস্থা যা অর্থ পাচার ও সন্ত্রাসে অর্থায়ন প্রতিরোধে বৈশ্বিক মানদণ্ড (৪০টি সুপারিশ) তৈরি করে এবং দেশগুলোর কমপ্লায়েন্স পর্যবেক্ষণ করে।</span><span class="lang-en">The <strong>Financial Action Task Force (FATF)</strong> is an international body that creates global standards (40 Recommendations) to prevent ML & TF and monitors countries' compliance.</span></p>
+
+                        <h3 class="text-lg font-semibold"><span class="lang-bn active-lang">এনজিওর উপর প্রভাব</span><span class="lang-en">Impact on NGOs</span></h3>
+                        <ul class="list-disc list-inside space-y-1 text-gray-700">
+                            <li><span class="lang-bn active-lang"><strong>ইতিবাচক প্রভাব:</strong> আর্থিক স্বচ্ছতা, বিশ্বাসযোগ্যতা ও দুর্নীতি প্রতিরোধে সহায়তা করে।</span><span class="lang-en"><strong>Positive Impact:</strong> Helps increase financial transparency, credibility, and prevent corruption.</span></li>
+                            <li><span class="lang-bn active-lang"><strong>নেতিবাচক বা চ্যালেঞ্জ:</strong> কঠোর নিয়ম-কানুন, অনুদান পেতে বিলম্ব, ছোট এনজিওর জন্য প্রশাসনিক জটিলতা সৃষ্টি করতে পারে।</span><span class="lang-en"><strong>Negative/Challenges:</strong> Can create stricter rules, delays in receiving funds, and administrative burdens for smaller NGOs.</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="space-y-4" id="accordion-container-ngo">
+                    
+                    <div class="bg-white rounded-lg shadow-md border border-gray-200">
+                        <button class="accordion-toggle flex justify-between items-center w-full p-5 font-semibold text-left">
+                            <span class="text-lg">
+                                <span class="lang-bn active-lang">BFIU/BB নির্দেশিকা (এনজিও/এনপিও) - সারসংক্ষেপ</span>
+                                <span class="lang-en">BFIU/BB Guidelines (NGO/NPO) - Summary</span>
+                            </span>
+                            <span class="accordion-icon text-2xl text-blue-600">+</span>
+                        </button>
+                        <div class="accordion-content px-5 pb-5">
+                            <p class="text-gray-700 mb-4"><span class="lang-bn active-lang">নিম্নে Bangladesh Financial Intelligence Unit (BFIU) এবং Bangladesh Bank কর্তৃক প্রকাশিত এনজি‌ও/এনপিও (NGO/NPO) সেক্টরের জন্য Money Laundering Prevention Act, 2012 ও Anti-Terrorism Act, 2009 এর আলোকে নির্দেশিকার সংক্ষিপ্ত রূপ দেওয়া হলো।</span><span class="lang-en">Below is a summary of the guidelines published by the Bangladesh Financial Intelligence Unit (BFIU) and Bangladesh Bank for the NGO/NPO sector, in light of the Money Laundering Prevention Act, 2012 & Anti-Terrorism Act, 2009.</span></p>
+                            
+                            <h4 class="font-semibold text-lg mb-2"><span class="lang-bn active-lang">১. উদ্দেশ্য</span><span class="lang-en">1. Objective</span></h4>
+                            <ul class="list-disc list-inside space-y-1 text-gray-700 mb-3">
+                                <li><span class="lang-bn active-lang">এনজি‌ও/এনপিও সেক্টরে অর্থ পাচার ও সন্ত্রাসী অর্থায়ন রোধে ঝুঁকি নির্ধারণ ও নিয়ন্ত্রণ নিশ্চিত করা। (bangladesh-bank.org)</span><span class="lang-en">To assess risk and ensure controls against Money Laundering (ML) and Terrorist Financing (TF) in the NGO/NPO sector. (bangladesh-bank.org)</span></li>
+                                <li><span class="lang-bn active-lang">সংশ্লিষ্ট আইন (MLPA 2012, ATA 2009) ও আন্তর্জাতিক মান মেনে চলা।</span><span class="lang-en">Compliance with relevant laws (MLPA 2012, ATA 2009) and international standards.</span></li>
+                            </ul>
+
+                            <h4 class="font-semibold text-lg mb-2"><span class="lang-bn active-lang">২. প্রযোজ্য সত্তা</span><span class="lang-en">2. Applicable Entities</span></h4>
+                            <ul class="list-disc list-inside space-y-1 text-gray-700 mb-3">
+                                <li><span class="lang-bn active-lang">বাংলাদেশে নিবন্ধিত বা কার্যরত এনজি‌ও/এনপিও, দান সংস্থা ও তহবিল গ্রহণ/বণ্টনকারী প্রতিষ্ঠান। (bangladesh-bank.org)</span><span class="lang-en">NGOs/NPOs, charitable organizations, and fund-receiving/distributing institutions registered or operating in Bangladesh. (bangladesh-bank.org)</span></li>
+                            </ul>
+                            
+                            <h4 class="font-semibold text-lg mb-2"><span class="lang-bn active-lang">৩. মূল নীতি ও দায়িত্ব</span><span class="lang-en">3. Core Principles & Responsibilities</span></h4>
+                            <ul class="list-disc list-inside space-y-1 text-gray-700 mb-3">
+                                <li><span class="lang-bn active-lang"><strong>গ্রাহক চিহ্নিতকরণ (KYC):</strong> দাতা, অংশীদার, কার্য‑প্রার্থী সংস্থা ইত্যাদির পরিচয় নিশ্চিত করা।</span><span class="lang-en"><strong>Customer Identification (KYC):</strong> Verify the identity of donors, partners, project applicants, etc.</span></li>
+                                <li><span class="lang-bn active-lang"><strong>তহবিল উৎস ও গন্তব্য স্বচ্ছতা:</strong> তহবিল কোথা থেকে এসেছে, কোথায় যাবে — এই তথ্য রেকর্ড রাখা।</span><span class="lang-en"><strong>Fund Source & Destination Transparency:</strong> Keep records of where funds came from and where they will go.</span></li>
+                                <li><span class="lang-bn active-lang"><strong>ঝুঁকি মূল্যায়ন:</strong> প্রতিষ্ঠানটি নিজস্ব ঝুঁকি বিশ্লেষণ করবে (তহবিল‑কার্যক্রম, ভূ‑রাজনৈতিক অবস্থান, অংশীদারদের ইতিহাস)।</span><span class="lang-en"><strong>Risk Assessment:</strong> The institution will analyze its own risks (funding activities, geopolitical location, partner history).</span></li>
+                                <li><span class="lang-bn active-lang"><strong>সন্দেহভাজন লেনদেন (STR/SAR):</strong> “সন্দেহভাজন” মনে হলে কর্তৃপক্ষকে জানাতে হবে। (bangladesh-bank.org)</span><span class="lang-en"><strong>Suspicious Transaction (STR/SAR):</strong> If any transaction seems "suspicious," it must be reported to the authorities. (bangladesh-bank.org)</span></li>
+                                <li><span class="lang-bn active-lang"><strong>রেকর্ড সংরক্ষণ:</strong> সংশ্লিষ্ট নথি নির্ধারিত সময় পর্যন্ত সংরক্ষণ করতে হবে। (ezine.eversheds-sutherland.com)</span><span class="lang-en"><strong>Record Keeping:</strong> Relevant documents must be preserved for the prescribed period. (ezine.eversheds-sutherland.com)</span></li>
+                                <li><span class="lang-bn active-lang"><strong>ম্যানেজমেন্ট ও অভ্যন্তরীণ নিয়ন্ত্রণ:</strong> শীর্ষ ব্যবস্থাপনা অভ্যন্তরীণ নীতি ও পদ্ধতি নিশ্চিত করবে।</span><span class="lang-en"><strong>Management & Internal Control:</strong> Top management will ensure internal policies and procedures.</span></li>
+                                <li><span class="lang-bn active-lang"><strong>প্রশিক্ষণ এবং নিয়মিত অডিট:</strong> কর্মচারীদের নিয়মিতভাবে AML/CFT বিষয়ক প্রশিক্ষণ দেওয়া।</span><span class="lang-en"><strong>Training and Regular Audit:</strong> Provide regular AML/CFT training to employees.</span></li>
+                            </ul>
+
+                            <h4 class="font-semibold text-lg mb-2"><span class="lang-bn active-lang">৪. ঝুঁকির উৎস ও লক্ষণীয় বিষয়</span><span class="lang-en">4. Risk Sources & Red Flags</span></h4>
+                            <ul class="list-disc list-inside space-y-1 text-gray-700 mb-3">
+                                <li><span class="lang-bn active-lang">অস্বাভাবিকভাবে আকস্মিক দান বা তহবিল পরিবর্তন।</span><span class="lang-en">Unusually sudden donations or fund changes.</span></li>
+                                <li><span class="lang-bn active-lang">তহবিল যখন সুনির্দিষ্ট কার্যক্রমের জন্য নয়, বা কার্যক্রম বিকল্প জায়গায় যায়।</span><span class="lang-en">Funds are not for a specific activity, or activities are diverted elsewhere.</span></li>
+                                <li><span class="lang-bn active-lang">অংশীদার বা কার্যপ্রণালীতে পূর্বেকার কোনো ঝুঁকিপূর্ণ সংস্থা/ব্যক্তি জড়িত।</span><span class="lang-en">A previously risky entity/person is involved as a partner or in the process.</span></li>
+                                <li><span class="lang-bn active-lang">তথ্য বা নথি অসম্পূর্ণ, যাচাই সম্ভব নয়।</span><span class="lang-en">Information or documents are incomplete and unverifiable.</span></li>
+                            </ul>
+                            
+                            <h4 class="font-semibold text-lg mb-2"><span class="lang-bn active-lang">৫. আইনানুগ দৃষ্টিকোণ</span><span class="lang-en">5. Legal Perspective</span></h4>
+                            <ul class="list-disc list-inside space-y-1 text-gray-700 mb-3">
+                                <li><span class="lang-bn active-lang">MLPA 2012 ও ATA 2009 অনুসারে, অর্থ পাচার বা সন্ত্রাসী অর্থায়নে যুক্ত প্রতিষ্ঠান বা ব্যক্তি কঠোর শাস্তির আওতায় পড়বে। (ezine.eversheds-sutherland.com)</span><span class="lang-en">As per MLPA 2012 & ATA 2009, any institution or person involved in money laundering or terrorist financing will face strict penalties. (ezine.eversheds-sutherland.com)</span></li>
+                            </ul>
+
+                            <h4 class="font-semibold text-lg mb-2"><span class="lang-bn active-lang">৬. এনজি‌ও/এনপিও‑র জন্য সতর্কতা</span><span class="lang-en">6. Cautions for NGOs/NPOs</span></h4>
+                            <ul class="list-disc list-inside space-y-1 text-gray-700">
+                                <li><span class="lang-bn active-lang">দান গ্রহণের আগে দাতার পরিচয় ও কাজের সুনির্দিষ্ট তথ্য যাচাই করুন।</span><span class="lang-en">Verify donor identity and specific work details before accepting donations.</span></li>
+                                <li><span class="lang-bn active-lang">তহবিল বিতরণের ক্ষেত্রে কার্যকারিতা ও গন্তব্য নিশ্চিত করুন।</span><span class="lang-en">Ensure the effectiveness and destination of fund disbursement.</span></li>
+                                <li><span class="lang-bn active-lang">নিজস্ব লিখিত নীতি এবং অভ্যন্তরীণ নিয়ন্ত্রণ ব্যবস্থা প্রস্তুত রাখুন।</span><span class="lang-en">Keep your own written policies and internal control systems ready.</span></li>
+                                <li><span class="lang-bn active-lang">সংশ্লিষ্ট কর্মকর্তা ও বোর্ড মেম্বারদের এই বিষয়ে সচেতন ও দায়িত্বশীল হতে হবে।</span><span class="lang-en">Relevant officers and board members must be aware and responsible in this regard.</span></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-md border border-gray-200">
+                        <button class="accordion-toggle flex justify-between items-center w-full p-5 font-semibold text-left">
+                            <span class="text-lg">
+                                <span class="lang-bn active-lang">এনজিও'র জন্য AML/CFT চেকলিস্ট</span>
+                                <span class="lang-en">AML/CFT Checklist for NGOs</span>
+                            </span>
+                            <span class="accordion-icon text-2xl text-blue-600">+</span>
+                        </button>
+                        <div class="accordion-content px-5 pb-5">
+                            <p class="text-gray-700 mb-4"><span class="lang-bn active-lang">নীচে NGO-র আর্থিক কার্যক্রমে মানি লন্ডারিং ও সন্ত্রাসী অর্থায়ন ঝুঁকি নির্ধারণ ও প্রতিরোধের জন্য ব্যবহারযোগ্য চেকলিস্ট দেওয়া হলো।</span><span class="lang-en">Below is a checklist for assessing and preventing money laundering and terrorist financing risks in NGO financial activities.</span></p>
+
+                            <div class="space-y-4 text-gray-700">
+                                <div>
+                                    <h4 class="font-semibold text-lg mb-2"><span class="lang-bn active-lang">নীতিমালা ও দায়িত্ব</span><span class="lang-en">Policy & Responsibility</span></h4>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li><span class="lang-bn active-lang">☐ প্রতিষ্ঠানের AML/CFT (Anti-Money Laundering / Counter Financing of Terrorism) নীতিমালা রয়েছে এবং তা লিখিত ও অনুমোদিত।</span><span class="lang-en">☐ The institution has a written and approved AML/CFT policy.</span></li>
+                                        <li><span class="lang-bn active-lang">☐ একটি নির্দিষ্ট AML/CFT অফিসার/দায়িত্বপ্রাপ্ত ব্যক্তি নিযুক্ত আছে।</span><span class="lang-en">☐ A designated AML/CFT Officer/responsible person is appointed.</span></li>
+                                        <li><span class="lang-bn active-lang">☐ আপডেট এবং সম্মতি মেকানিজম (review schedule) নির্ধারিত আছে (সাধারণত বছরে একবার অথবা রিস্ক-ভিত্তিক)।</span><span class="lang-en">☐ An update and compliance mechanism (review schedule) is set (usually annually or risk-based).</span></li>
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <h4 class="font-semibold text-lg mb-2"><span class="lang-bn active-lang">কেওয়াইসি (KYC) ও দাতা/লাভভোগী যাচাই</span><span class="lang-en">KYC & Donor/Beneficiary Verification</span></h4>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li><span class="lang-bn active-lang">☐ বড় অনুদান/অপ্রচলিত দাতা সম্পর্কে পূর্ণ পরিচয়পত্র সংগ্রহ করা হয় (পাসপোর্ট/জাতীয় পরিচয়/বিজনেস রেজিস্ট্রেশন ইত্যাদি)।</span><span class="lang-en">☐ Full identification (Passport/NID/Business Registration etc.) is collected for large/unconventional donors.</span></li>
+                                        <li><span class="lang-bn active-lang">☐ দাতার পরিচয় ও অর্থের উৎস (source of funds/wealth) যাচাই করা হয়।</span><span class="lang-en">☐ Donor identity and source of funds/wealth are verified.</span></li>
+                                        <li><span class="lang-bn active-lang">☐ অস্বচ্ছ/অপরিচিত দাতা হলে অতিরিক্ত যাচাই (enhanced due diligence) করা হয়।</span><span class="lang-en">☐ Enhanced due diligence is performed for opaque/unknown donors.</span></li>
+                                        <li><span class="lang-bn active-lang">☐ অনুদানের প্রাপক/লাভভোগীর পরিচয় যাচাই রয়েছে এবং প্রকল্পে যোগ্যতা প্রমাণপত্র সংরক্ষণ করা হয়।</span><span class="lang-en">☐ Identity verification for grant recipients/beneficiaries is in place and eligibility proof is stored.</span></li>
+                                    </ul>
+                                </div>
+                                
+                                <div>
+                                    <h4 class="font-semibold text-lg mb-2"><span class="lang-bn active-lang">লেনদেন পর্যবেক্ষণ ও সীমা</span><span class="lang-en">Transaction Monitoring & Limits</span></h4>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li><span class="lang-bn active-lang">☐ নগদ গ্রহণের সীমা নির্ধারিত ও কড়াকড়ি আছে; নগদ লেনদেনের জন্য রিসিপ্ট/ভাউচার বাধ্যতামূলক।</span><span class="lang-en">☐ Cash acceptance limits are defined and strict; receipts/vouchers are mandatory for cash transactions.</span></li>
+                                        <li><span class="lang-bn active-lang">☐ বড় বা অস্বাভাবিক লেনদেনের জন্য অ্যালার্ম/রিপোর্টিং প্রক্রিয়া আছে।</span><span class="lang-en">☐ An alarm/reporting process exists for large or unusual transactions.</span></li>
+                                        <li><span class="lang-bn active-lang">☐ তৎপরভাবে ফান্ডের গন্তব্য ও ব্যয় (purpose of expense) সঙ্গত কিনা যাচাই করা হয়।</span><span class="lang-en">☐ The purpose of expense and destination of funds are actively verified for validity.</span></li>
+                                        <li><span class="lang-bn active-lang">☐ ত্রৈমাসিক/মাসিক লেনদেন বিশ্লেষণ রিপোর্ট তৈরি হয়।</span><span class="lang-en">☐ Quarterly/monthly transaction analysis reports are generated.</span></li>
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <h4 class="font-semibold text-lg mb-2"><span class="lang-bn active-lang">তহবিলের উৎস ও গন্তব্য যাচাই</span><span class="lang-en">Fund Source & Destination Verification</span></h4>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li><span class="lang-bn active-lang">☐ দাতার ব্যাংক বিবরণ এবং উৎসের কাগজপত্র সংরক্ষণ করা হয়।</span><span class="lang-en">☐ Donor's bank statements and source documents are preserved.</span></li>
+                                        <li><span class="lang-bn active-lang">☐ তহবিল বহির্গমন/প্রেরণের ক্ষেত্রে বৈধতা (ব্যাংক ট্রান্সফার/চেক/অনলাইন স্টেটমেন্ট) যাচাই করা হয়।</span><span class="lang-en">☐ Legitimacy (bank transfer/check/online statement) is verified for fund outflows/remittances.</span></li>
+                                        <li><span class="lang-bn active-lang">☐ তহবিল তৃতীয় পক্ষের মাধ্যমে আসলে (third-party payments) অতিরিক্ত যাচাই করা হয়।</span><span class="lang-en">☐ Additional verification is done for third-party payments.</span></li>
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <h4 class="font-semibold text-lg mb-2"><span class="lang-bn active-lang">সরবরাহকারী/কনট্রাক্টর যাচাই</span><span class="lang-en">Supplier/Contractor Verification</span></h4>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li><span class="lang-bn active-lang">☐ সরবরাহকারীর/কনট্রাক্টরের পরিচয়, ব্যবসা নিবন্ধন ও ট্যাক্স তথ্য যাচাই করা আছে।</span><span class="lang-en">☐ Supplier/contractor identity, business registration, and tax information are verified.</span></li>
+                                        <li><span class="lang-bn active-lang">☐ দরদাম প্রক্রিয়া (procurement) স্বচ্ছ; নথি ও মূল্য সিদ্ধান্ত সংরক্ষিত।</span><span class="lang-en">☐ Procurement process is transparent; documents and pricing decisions are preserved.</span></li>
+                                        <li><span class="lang-bn active-lang">☐ অনির্ভরযোগ্য বা অনির্দিষ্ট ঠিকানার কোম্পানির সাথে লেনদেন হলে অতিরিক্ত যাচাই।</span><span class="lang-en">☐ Additional verification for transactions with unreliable or unspecified address companies.</span></li>
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <h4 class="font-semibold text-lg mb-2"><span class="lang-bn active-lang">অভ্যন্তরীণ নিয়ন্ত্রণ ও সেগ্রিগেশন অফ ডিউটি</span><span class="lang-en">Internal Control & Segregation of Duties</span></h4>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li><span class="lang-bn active-lang">☐ অর্থ গ্রহণ, অনুমোদন ও প্রদানের ভূমিকা আলাদা আলাদা কর্মীর মাধ্যমে সম্পন্ন হয় (segregation of duties)।</span><span class="lang-en">☐ Segregation of duties for receiving, approving, and disbursing funds is maintained.</span></li>
+                                        <li><span class="lang-bn active-lang">☐ ব্যাংক রিকনসিলিয়েশন নিয়মিত করা হয় এবং স্বাক্ষর প্রক্রিয়া নির্ধারিত।</span><span class="lang-en">☐ Bank reconciliation is done regularly and the signatory process is defined.</span></li>
+                                        <li><span class="lang-bn active-lang">☐ দফতরিক ক্যাশ কাউন্টার/ক্যাশবুক তারিখভিত্তিক মিল আছে।</span><span class="lang-en">☐ Office cash counter/cashbook is reconciled daily/by date.</span></li>
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <h4 class="font-semibold text-lg mb-2"><span class="lang-bn active-lang">রেকর্ড কিপিং ও ট্রান্সপারেন্সি</span><span class="lang-en">Record Keeping & Transparency</span></h4>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li><span class="lang-bn active-lang">☐ সব আর্থিক নথি (লেনদেন স্টেটমেন্ট, রিসিপ্ট, ভাউচার) বিধি অনুসারে সংরক্ষণ করা হয় (সাধারণত ৫-৭ বছর)।</span><span class="lang-en">☐ All financial documents (statements, receipts, vouchers) are preserved according to rules (usually 5-7 years).</span></li>
+                                        <li><span class="lang-bn active-lang">☐ অনুদান/প্রকল্প অনুসারে খরচ বিশ্লেষণ ও ব্যয়ের সমর্থক কাগজপত্র (supporting documents) সংরক্ষিত।</span><span class="lang-en">☐ Expenditure analysis by grant/project and supporting documents are preserved.</span></li>
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <h4 class="font-semibold text-lg mb-2"><span class="lang-bn active-lang">রিপোর্টিং ও কর্তৃপক্ষের সাথে সমন্বয়</span><span class="lang-en">Reporting & Coordination with Authorities</span></h4>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li><span class="lang-bn active-lang">☐ সন্দেহজনক লেনদেনের ঘটনা (STR/SAR) রিপোর্ট করার প্রক্রিয়া প্রতিষ্ঠিত আছে।</span><span class="lang-en">☐ A process for reporting suspicious transactions (STR/SAR) is established.</span></li>
+                                        <li><span class="lang-bn active-lang">☐ সরকারি বা ব্যাংকিং কর্তৃপক্ষের নির্দেশনা অনুযায়ী রিপোর্টিং টাইমলাইন জানা আছে।</span><span class="lang-en">☐ Reporting timelines as per government or banking authority directives are known.</span></li>
+                                        <li><span class="lang-bn active-lang">☐ জড়িত সন্দেহ হলে আইনি পরামর্শ নেয়ার ব্যবস্থা রয়েছে।</span><span class="lang-en">☐ A system for seeking legal advice in case of suspected involvement is in place.</span></li>
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <h4 class="font-semibold text-lg mb-2"><span class="lang-bn active-lang">ঝুঁকি ও তৃতীয়-পক্ষ মনিটরিং</span><span class="lang-en">Risk & Third-Party Monitoring</span></h4>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li><span class="lang-bn active-lang">☐ তৃতীয়-পক্ষ ও অংশীদারদের (partners) AML/CFT কমপ্লায়েন্স যাচাই করা হয়।</span><span class="lang-en">☐ Third-party and partners' AML/CFT compliance is verified.</span></li>
+                                        <li><span class="lang-bn active-lang">☐ ডিজিটাল অনুদান/পেমেন্ট পদ্ধতির ক্ষেত্রে নিরাপত্তা এবং লেনদেন অডিট ট্রেইল বজায় আছে।</span><span class="lang-en">☐ Security and transaction audit trails are maintained for digital donation/payment methods.</span></li>
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <h4 class="font-semibold text-lg mb-2"><span class="lang-bn active-lang">প্রশিক্ষণ ও সচেতনতা</span><span class="lang-en">Training & Awareness</span></h4>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li><span class="lang-bn active-lang">☐ সকল আর্থিক ও প্রজেক্ট স্টাফদের জন্য নিয়মিত AML/CFT প্রশিক্ষণ আছে।</span><span class="lang-en">☐ Regular AML/CFT training exists for all financial and project staff.</span></li>
+                                        <li><span class="lang-bn active-lang">☐ যথার্থতার জন্য প্রশিক্ষণ রেকর্ড ও উপস্থিতি তালিকা সংরক্ষিত।</span><span class="lang-en">☐ Training records and attendance lists are preserved for verification.</span></li>
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <h4 class="font-semibold text-lg mb-2"><span class="lang-bn active-lang">স্যানকশন ও ব্ল্যাকলিস্ট স্ক্রিনিং</span><span class="lang-en">Sanction & Blacklist Screening</span></h4>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li><span class="lang-bn active-lang">☐ দাতা/লাভভোগী/সরবরাহকারীকে জাতীয় ও আন্তর্জাতিক স্যানকশন তালিকার (sanctions/PEP/terror lists) বিরুদ্ধে স্ক্রিনিং করা হয়।</span><span class="lang-en">☐ Donors/beneficiaries/suppliers are screened against national and international sanctions/PEP/terror lists.</span></li>
+                                        <li><span class="lang-bn active-lang">☐ সংশ্লিষ্ট ব্যক্তির নাম/আইডি মিলে গেলে দ্রুত রিমিডিয়াল পদক্ষেপ নিয়ে রেকর্ড করা হয়।</span><span class="lang-en">☐ If a name/ID matches, remedial steps are taken quickly and recorded.</span></li>
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <h4 class="font-semibold text-lg mb-2"><span class="lang-bn active-lang">অনুসন্ধান ও অডিট</span><span class="lang-en">Investigation & Audit</span></h4>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li><span class="lang-bn active-lang">☐ স্বাধীন অভ্যন্তরীণ অডিট/রিভিউ-র মাধ্যমে AML কার্যক্রম পর্যবেক্ষণ করা হয়।</span><span class="lang-en">☐ AML activities are monitored through independent internal audit/review.</span></li>
+                                        <li><span class="lang-bn active-lang">☐ পূর্বে শনাক্ত সমস্যার জন্য রিমিডিয়েশন প্ল্যান ও ফলো-আপ আছে।</span><span class="lang-en">☐ A remediation plan and follow-up exist for previously identified issues.</span></li>
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <h4 class="font-semibold text-lg mb-2"><span class="lang-bn active-lang">প্রকল্প-ভিত্তিক ঝুঁকি মূল্যায়ন</span><span class="lang-en">Project-Based Risk Assessment</span></h4>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li><span class="lang-bn active-lang">☐ প্রতিটি প্রকল্পের ঝুঁকি (ডোনার, অঞ্চল, ক্যাশ-ইন-কার্যক্রম, তৃতীয়-পক্ষ ইত্যাদি) মূল্যায়ন করা হয়।</span><span class="lang-en">☐ Risk assessment is conducted for each project (donor, region, cash-based activities, third-party etc.).</span></li>
+                                        <li><span class="lang-bn active-lang">☐ উচ্চ-ঝুঁকির এলাকায় অতিরিক্ত মনিটরিং পরিকল্পনা আছে।</span><span class="lang-en">☐ An additional monitoring plan exists for high-risk areas.</span></li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
             <section id="conclusion" class="content-section hidden">
                 <h1 class="text-3xl font-bold mb-4">
                     <span class="lang-bn active-lang">উপসংহার</span>
@@ -884,8 +1143,7 @@
             
             const tabGroups = document.querySelectorAll('[data-tab-group]');
             const diagramGroups = document.querySelectorAll('[data-diagram-group]');
-            const accordionContainer = document.getElementById('accordion-container');
-
+            
             // --- Data for Interactive Elements ---
             const mlStageInfo = {
                 'ml-placement': {
@@ -936,7 +1194,15 @@
                 contentSections.forEach(section => {
                     section.classList.add('hidden');
                 });
-                document.getElementById(currentSection).classList.remove('hidden');
+                const activeSection = document.getElementById(currentSection);
+                if (activeSection) {
+                    activeSection.classList.remove('hidden');
+                } else {
+                    // Fallback to home if section not found
+                    document.getElementById('home').classList.remove('hidden');
+                    currentSection = 'home';
+                }
+
 
                 // Active Nav Link
                 navLinks.forEach(link => {
@@ -976,7 +1242,7 @@
             function setupTabs() {
                 tabGroups.forEach(group => {
                     const buttons = group.querySelectorAll('.tab-btn');
-                    const contents = group.parentElement.querySelectorAll('[data-tab-content]');
+                    const contents = group.closest('section, .bg-white').querySelectorAll('[data-tab-content]');
                     
                     buttons.forEach(button => {
                         button.addEventListener('click', () => {
@@ -1018,6 +1284,7 @@
                                     <p class="lang-en">${info.en}</p>
                                 `;
                                 // Re-apply language visibility
+                                infoDisplay.querySelectorAll('.lang-bn, .lang-en').forEach(el => el.classList.remove('active-lang'));
                                 infoDisplay.querySelectorAll(`.lang-${currentLang}`).forEach(el => {
                                     el.classList.add('active-lang');
                                 });
@@ -1027,24 +1294,40 @@
                 });
             }
 
+            // ### MODIFIED JAVASCRIPT ###
+            // This function now finds ALL accordion toggles on the page,
+            // not just ones inside a specific container.
             function setupAccordion() {
-                if (!accordionContainer) return;
-                const toggles = accordionContainer.querySelectorAll('.accordion-toggle');
+                const toggles = document.querySelectorAll('.accordion-toggle'); // Select all toggles
                 toggles.forEach(toggle => {
                     toggle.addEventListener('click', () => {
                         const content = toggle.nextElementSibling;
                         const icon = toggle.querySelector('.accordion-icon');
                         
+                        // Check if content is open (has a maxHeight)
                         if (content.style.maxHeight) {
-                            content.style.maxHeight = null;
+                            content.style.maxHeight = null; // Close it
                             icon.textContent = '+';
                         } else {
+                            // Close all other accordions in the same group (optional, but good practice)
+                            const parentContainer = toggle.closest('.space-y-4'); // Find the accordion group
+                            if (parentContainer) {
+                                parentContainer.querySelectorAll('.accordion-toggle').forEach(otherToggle => {
+                                    if(otherToggle !== toggle) { // Don't close itself
+                                        otherToggle.nextElementSibling.style.maxHeight = null;
+                                        otherToggle.querySelector('.accordion-icon').textContent = '+';
+                                    }
+                                });
+                            }
+                            
+                            // Open the clicked one
                             content.style.maxHeight = content.scrollHeight + "px";
                             icon.textContent = '−';
                         }
                     });
                 });
             }
+            // ### END OF MODIFICATION ###
 
             let statsChartInstance = null;
             function renderStatsChart() {
@@ -1118,5 +1401,3 @@
     </script>
 </body>
 </html>
-
-
